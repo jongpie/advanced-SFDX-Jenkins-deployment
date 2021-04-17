@@ -32,21 +32,24 @@ def installDependencies() {
 }
 
 def loadEnvironment(salesforceEnvironmentName) {
+    return salesforceEnvironmentName
     //def environments = readJSON file: '${env.WORKSPACE}/sfdx-environments.json'
     //def sfdxEnvironments = readJSON file: ".//sfdx-environments.json"
     //File file = new File('sfdx-environments.json')
-    def jsonSlurper = new JsonSlurper()
-    def jsonData = jsonSlurper.parse(new File('sfdx-environments.json'))
-    def sfdxEnvironments = readJSON text: jsonData
     // def sfdxEnvironments = jsonSlurper.parseText('{ "name": "John", "ID" : "1"}')
 
-    def matchingEnvironment
-    for (Object env : sfdxEnvironments) {
-        if (env.name == salesforceEnvironmentName) {
-            matchingEnvironment = env
-            break
-        }
-    }
+
+    // def jsonSlurper = new JsonSlurper()
+    // def jsonData = jsonSlurper.parse(new File('sfdx-environments.json'))
+    // def sfdxEnvironments = readJSON text: jsonData
+
+    // def matchingEnvironment
+    // for (Object env : sfdxEnvironments) {
+    //     if (env.name == salesforceEnvironmentName) {
+    //         matchingEnvironment = env
+    //         break
+    //     }
+    // }
 }
 
 def getPackageDirectories() {
