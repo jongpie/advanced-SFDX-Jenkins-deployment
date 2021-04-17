@@ -31,7 +31,7 @@ def installDependencies() {
 
 def loadEnvironment(salesforceEnvironmentName) {
     //def environments = readJSON file: '${env.WORKSPACE}/sfdx-environments.json'
-    def sfdxEnvironments = readJSON file: ".\\sfdx-environments.json"
+    def sfdxEnvironments = readJSON file: ".//sfdx-environments.json"
 
     def matchingEnvironment
     for (Object env : sfdxEnvironments) {
