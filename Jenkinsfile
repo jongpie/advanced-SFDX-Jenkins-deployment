@@ -190,8 +190,8 @@ pipeline {
                         createScratchOrg()
                         deployToSalesforce(SCRATCH_ORG, true, true)
                         //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
-                        runApexTests(SCRATCH_ORG)
-                        runApexScanner()
+                        // runApexTests(SCRATCH_ORG)
+                        // runApexScanner()
                     }
                 }
             }
