@@ -19,6 +19,9 @@ def QA_SANDBOX      = loadEnvironment('QA')
 def SCRATCH_ORG = readJSON text: '{ "name": "scratch-org" }'
 def SCRATCH_DEFINITION_FILE = "config/project-scratch-def.json"
 
+environment {
+    SFDX_ENVIRONMENTS_CONFIG_PATH='sfdx-environments.json'
+}
 // Static variables
 // def BUILD_NOTIFICATION_EMAIL = 'someone@test.com'
 // def SCHEDULE_JOBS_SCRIPT     = './scripts/schedule-jobs.apex'
@@ -30,10 +33,10 @@ def installDependencies() {
 }
 
 def loadEnvironment(salesforceEnvironmentName) {
-    def environments = readJSON file: './sfdx-environments.json'
+    def sfdxEnvironments = readJSON file: '${SFDX_ENVIRONMENTS_CONFIG_PATH}'
 
     def matchingEnvironment
-    for (Object env : environments) {
+    for (Object env : sfdxEnvironments) {
         if (env.name == salesforceEnvironmentName) {
             matchingEnvironment = env
             break
