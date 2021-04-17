@@ -115,7 +115,8 @@ def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName
 }
 
 def runApexScanner() {
-    sh label: 'Running SFDX Scanner', script: 'sfdx scanner:run'
+    //sh label: 'Running SFDX Scanner', script: 'sfdx scanner:run'
+    bat 'sfdx scanner:run'
 }
 
 def runApexScript(salesforceEnvironment, apexCodeFile) {
@@ -187,10 +188,10 @@ pipeline {
                 stage('Scratch Org') {
                     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
-                        createScratchOrg()
-                        deployToSalesforce(SCRATCH_ORG, true, false)
-                        //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
-                        runApexTests(SCRATCH_ORG)
+                        // createScratchOrg()
+                        // deployToSalesforce(SCRATCH_ORG, true, false)
+                        // //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
+                        // runApexTests(SCRATCH_ORG)
                         runApexScanner()
                     }
                 }
