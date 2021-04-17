@@ -74,7 +74,7 @@ def authorizeEnvironment(salesforceEnvironment) {
 }
 
 def createScratchOrg() {
-
+    sh label: 'TODO - create scratch org', script: 'echo TODOoooOO'
 }
 
 def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
