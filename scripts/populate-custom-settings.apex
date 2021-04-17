@@ -1,0 +1,1 @@
+upsert MyCustomSettings__c.getOrgDefaults();
