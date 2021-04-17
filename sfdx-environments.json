@@ -1,0 +1,51 @@
+[
+    {
+        "name": "Production",
+        "deployOnlyDiff": true,
+        "jenkinsCredentialsName": "Salesforce-production",
+        "experienceSites": ["My_Community_Site1"],
+        "configData": [
+            {
+                "csvFile": "data/Accounts.csv",
+                "sobjectType": "Account",
+                "externalIdField": "MyExternalId__c"
+            }
+        ],
+        "postDeploymentScripts": ["/scripts/schedule-jobs.apex", "/scripts/populate-custom-settings.apex"]
+    },
+    {
+        "name": "Staging",
+        "deployOnlyDiff": false,
+        "jenkinsCredentialsName": "Salesforce-staging-sandbox",
+        "experienceSites": ["My_Community_Site1"],
+        "configData": [
+            {
+                "csvFile": "data/Accounts.csv",
+                "sobjectType": "Account",
+                "externalIdField": "MyExternalId__c"
+            }
+        ],
+        "postDeploymentScripts": ["/scripts/schedule-jobs.apex", "/scripts/populate-custom-settings.apex"]
+    },
+    {
+        "name": "UAT",
+        "deployOnlyDiff": false,
+        "jenkinsCredentialsName": "Salesforce-uat-sandbox",
+        "experienceSites": ["My_Community_Site1"],
+        "configData": [
+            {
+                "csvFile": "data/Accounts.csv",
+                "sobjectType": "Account",
+                "externalIdField": "MyExternalId__c"
+            }
+        ],
+        "postDeploymentScripts": ["/scripts/schedule-jobs.apex", "/scripts/populate-custom-settings.apex"]
+    },
+    {
+        "name": "QA",
+        "deployOnlyDiff": false,
+        "jenkinsCredentialsName": "Salesforce-uat-sandbox",
+        "experienceSites": ["My_Community_Site1"],
+        "postDeploymentScripts": ["/scripts/schedule-jobs.apex"]
+    }
+]
