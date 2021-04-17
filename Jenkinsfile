@@ -36,7 +36,7 @@ def loadEnvironment(salesforceEnvironmentName) {
     //def sfdxEnvironments = readJSON file: ".//sfdx-environments.json"
     //File file = new File('sfdx-environments.json')
     def jsonSlurper = new JsonSlurper()
-    def jsonData = jsonSlurper.parse(new File(sfdx-environments.json))
+    def jsonData = jsonSlurper.parse(new File('sfdx-environments.json'))
     def sfdxEnvironments = readJSON text: jsonData
     // def sfdxEnvironments = jsonSlurper.parseText('{ "name": "John", "ID" : "1"}')
 
