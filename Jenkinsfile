@@ -136,6 +136,7 @@ pipeline {
         stage('Convert Source to MDAPI') {
             when { branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH }
             steps { convertSourceToMdapiFormat() }
+        }
         stage('Deploy to Salesforce') {
             parallel {
                 stage('1. Production') {
