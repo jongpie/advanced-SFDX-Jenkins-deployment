@@ -116,7 +116,7 @@ def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName
 
 def runApexScanner() {
     //sh label: 'Running SFDX Scanner', script: 'sfdx scanner:run'
-    bat 'sfdx scanner:run'
+    bat 'sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml'
 }
 
 def runApexScript(salesforceEnvironment, apexCodeFile) {
