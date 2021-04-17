@@ -74,7 +74,8 @@ def authorizeEnvironment(salesforceEnvironment) {
 }
 
 def createScratchOrg() {
-    sh label: 'TODO - create scratch org', script: 'echo TODOoooOO'
+    //sh label: 'TODO - create scratch org', script: 'echo TODOoooOO'
+    bat 'echo TODO make a scratch org!'
 }
 
 def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
@@ -145,6 +146,10 @@ pipeline {
         // stage('Install NPM Dependencies') {
         //     steps { installDependencies() }
         // }
+        stage('Run Apex Scanner') {
+            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+            steps { runApexScanner() }
+        }
         stage('Convert Source to MDAPI') {
             when { branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH }
             steps { convertSourceToMdapiFormat() }
@@ -188,11 +193,10 @@ pipeline {
                 stage('Scratch Org') {
                     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
-                        // createScratchOrg()
+                        createScratchOrg()
                         // deployToSalesforce(SCRATCH_ORG, true, false)
                         // //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
                         // runApexTests(SCRATCH_ORG)
-                        runApexScanner()
                     }
                 }
             }
@@ -261,14 +265,6 @@ pipeline {
                     }
                 }
             }
-        }
-        stage('Get Test Coverage') {
-            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-            steps { runApexTests(SCRATCH_ORG) }
-        }
-        stage('Run Apex Scanner') {
-            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-            steps { runApexScanner() }
         }
     }
     post {
