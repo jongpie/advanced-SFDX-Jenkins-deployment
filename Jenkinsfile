@@ -42,12 +42,12 @@ def loadEnvironment(salesforceEnvironmentName) {
 }
 
 def getPackageDirectories() {
-    "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
-    }
-  ]
+//     "packageDirectories": [
+//     {
+//       "path": "force-app",
+//       "default": true
+//     }
+//   ]
 }
 
 def convertSourceToMdapiFormat() {
