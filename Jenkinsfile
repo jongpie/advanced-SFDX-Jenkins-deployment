@@ -187,9 +187,11 @@ pipeline {
                 stage('Scratch Org') {
                     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
-                        authorizeEnvironment(SCRATCH_ORG)
-                        deploy(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH)
-                        publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
+                        createScratchOrg()
+                        deploy(SCRATCH_ORG, true)
+                        //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
+                        runApexTests(SCRATCH_ORG)
+                        runApexScanner()
                     }
                 }
             }
