@@ -65,6 +65,10 @@ def convertSourceToMdapiFormat() {
 
 }
 
+def runLwcTests() {
+    bat 'sfdx force:lightning:lwc:test:run'
+}
+
 def authorizeEnvironment(salesforceEnvironment) {
     withCredentials([string(credentialsId: salesforceEnvironment, variable: 'sfdxAuthUrl')]) {
         sh label: 'Creating authorization file', script: 'echo "$sfdxAuthUrl" > ' + salesforceEnvironment
@@ -149,6 +153,10 @@ pipeline {
         stage('Run Apex Scanner') {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
             steps { runApexScanner() }
+        }
+        stage('Run LWC Tests') {
+            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+            steps { runLwcTests() }
         }
         stage('Convert Source to MDAPI') {
             when { branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH }

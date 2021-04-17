@@ -6,6 +6,7 @@
     "scripts": {
         "install-sfdx-git-delta": "sfdx plugins:install sfdx-git-delta",
         "install-sfdx-scanner": "sfdx plugins:install @salesforce/sfdx-scanner",
+        "install-sfdx-lwc-jest": "sfdx force:lightning:lwc:test:setup",
         "lint": "npm run lint:lwc && npm run lint:aura",
         "lint:aura": "eslint **/aura/**",
         "lint:lwc": "eslint **/lwc/**",
