@@ -77,7 +77,7 @@ def createScratchOrg() {
 
 }
 
-def deploy(salesforceEnvironment, commitChanges, deployOnlyDiff) {
+def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
     try {
         def checkOnlyParam = commitChanges ? '' : ' --checkonly --testlevel RunLocalTests'
         def deployMessage  = commitChanges ? '. Deployment changes will be saved.' : '. Running check-only validation - deployment changes will not be saved.'
@@ -154,7 +154,7 @@ pipeline {
                     when  { anyOf { branch RELEASE_PREFIX; branch MAIN_BRANCH } }
                     steps {
                         authorizeEnvironment(PRODUCTION)
-                        deploy(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH)
+                        deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH)
                         publishCommunitySite(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH, 'My_Community_Site1')
                     }
                 }
@@ -162,7 +162,7 @@ pipeline {
                     when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         authorizeEnvironment(STAGING_SANDBOX)
-                        deploy(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX)
+                        deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX)
                         publishCommunitySite(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, 'My_Community_Site1')
                     }
                 }
@@ -172,7 +172,7 @@ pipeline {
                     when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
                     steps {
                         authorizeEnvironment(UAT_SANDBOX)
-                        deploy(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH)
+                        deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH)
                         publishCommunitySite(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, 'My_Community_Site1')
                     }
                 }
@@ -180,7 +180,7 @@ pipeline {
                     when  { branch DEVELOP_BRANCH }
                     steps {
                         authorizeEnvironment(QA_SANDBOX)
-                        deploy(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH)
+                        deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH)
                         publishCommunitySite(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
                     }
                 }
@@ -188,7 +188,7 @@ pipeline {
                     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
                         createScratchOrg()
-                        deploy(SCRATCH_ORG, true)
+                        deployToSalesforce(SCRATCH_ORG, true)
                         //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
                         runApexTests(SCRATCH_ORG)
                         runApexScanner()
