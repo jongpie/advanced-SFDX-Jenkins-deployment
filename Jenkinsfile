@@ -1,5 +1,7 @@
 // Jenkins build pipeline for Salesforce
 
+import java.io.File
+
 // Primary git branches
 def MAIN_BRANCH           = 'main'
 def UAT_BRANCH            = 'uat'
@@ -31,7 +33,10 @@ def installDependencies() {
 
 def loadEnvironment(salesforceEnvironmentName) {
     //def environments = readJSON file: '${env.WORKSPACE}/sfdx-environments.json'
-    def sfdxEnvironments = readJSON file: ".//sfdx-environments.json"
+    //def sfdxEnvironments = readJSON file: ".//sfdx-environments.json"
+    File file = new File('sfdx-environments.json')
+    def sfdxEnvironments = readJSON text: file.text
+    // def sfdxEnvironments = jsonSlurper.parseText('{ "name": "John", "ID" : "1"}')
 
     def matchingEnvironment
     for (Object env : sfdxEnvironments) {
