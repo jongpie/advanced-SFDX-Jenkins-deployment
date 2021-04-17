@@ -277,11 +277,11 @@ pipeline {
     }
     post {
         always {
-            junit allowEmptyResults: true, testResults: 'tests/**/*.xml'
+            // junit allowEmptyResults: true, testResults: 'tests/**/*.xml'
 
-            recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
+            // recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
 
-            cleanWs()
+            // cleanWs()
         }
         // success {
         //     emailext to : "${BUILD_NOTIFICATION_EMAIL}",
