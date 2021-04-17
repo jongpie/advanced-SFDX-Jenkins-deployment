@@ -162,7 +162,7 @@ pipeline {
                     when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         authorizeEnvironment(STAGING_SANDBOX)
-                        deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, true)
+                        deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, false)
                         publishCommunitySite(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, 'My_Community_Site1')
                     }
                 }
@@ -172,7 +172,7 @@ pipeline {
                     when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
                     steps {
                         authorizeEnvironment(UAT_SANDBOX)
-                        deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, true)
+                        deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
                         publishCommunitySite(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, 'My_Community_Site1')
                     }
                 }
@@ -180,7 +180,7 @@ pipeline {
                     when  { branch DEVELOP_BRANCH }
                     steps {
                         authorizeEnvironment(QA_SANDBOX)
-                        deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, true)
+                        deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, false)
                         publishCommunitySite(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
                     }
                 }
@@ -188,10 +188,10 @@ pipeline {
                     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
                         createScratchOrg()
-                        deployToSalesforce(SCRATCH_ORG, true, true)
+                        deployToSalesforce(SCRATCH_ORG, true, false)
                         //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
-                        // runApexTests(SCRATCH_ORG)
-                        // runApexScanner()
+                        runApexTests(SCRATCH_ORG)
+                        runApexScanner()
                     }
                 }
             }
