@@ -12,19 +12,15 @@ This repository is an example of how you can deploy to multiple Salesforce envio
 
 The deployment process itself is controlled by `Jenkinsfile` (stored in the repo's root directory). It uses `SFDX` commands to handle several common deployment steps:
 
--   Diff-only deployments to production using the [SFDX-Git-Delta](https://github.com/scolladon/sfdx-git-delta) plugin
-    -   Including automatically generating & deploying `destructiveChanges.xml`
--   Full deployments to sandbox environments
-    -   Including automatically generating & deploying `destructiveChanges.xml`
-    -   3 sandboxes are used - but this approach scales well and it can easily be changed to use more environments, depending on your project's needs. (I've used this approach for automatically deploying to 12+ sandboxes)
--   Validation-only deployments to scratch orgs for continuous integration of `feature/*` and `bugfix/*` branches
--   Run static code analysis on Apex code using Salesforce's [SFDX Scanner plugin](https://forcedotcom.github.io/sfdx-scanner)
--   Tracking Apex code coverage within Jenkins
--   Upserting CSV data after the deployment
-    -   This can be used for upserting an SObject
--   Running Apex post-deployment scripts to:
-    -   Upsert custom settings
-    -   Schedule an Apex job
+| Deployment Step                           | Purpose                                                                                                                                                                                                                          |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Continuous Integration using Scratch Orgs | For `feature/*` and `bugfix/*` branches, scratch orgs are automatically created & used to deploy all metadata, run Apex tests and store the results in Jenkins                                                                   |
+| Sandbox Deployments                       | 4 sandboxes are used - but this approach scales well and it can easily be changed to use more (or fewer) environments, depending on your project's needs. (I've used this approach for automatically deploying to 12+ sandboxes) |
+| Diff-only Prod Deployments                | Diff-only deployments to production using the [SFDX-Git-Delta](https://github.com/scolladon/sfdx-git-delta) plugin, including automatically generating & deploying `destructiveChanges.xml`                                      |
+| Static Code Analysis                      | Run static code analysis on Apex code using Salesforce's [SFDX Scanner plugin](https://forcedotcom.github.io/sfdx-scanner)                                                                                                       |
+| Upsert Custom Settings                    | Runs a post-deployment script to upsert `MyCustomSetting__c` custom setting                                                                                                                                                      |
+| Upsert SObject data                       | Automatically upserts CSV data after the deployment                                                                                                                                                                              |
+| Schedule Apex Jobs                        | Run a post-deployment script to (re-)schedule the Apex job `MySchedulableJob`                                                                                                                                                    |
 
 ## Important Files
 
@@ -73,6 +69,7 @@ This repo uses these Salesforce environments for example purposes. You can add a
 |`Production`|qwerty
 |`Staging`|asdf
 |`UAT`|A sandbox used for user-acceptance testing
+|`DataMig`|A sandbox used for data migration. Deployments to `UAT` and `DataMig` run in parallel.
 |`QA`|A sandbox used for internal testing
 |`Scratch Orgs`|When validating `feature` and `bugfix` branches (discussed below), a scratch org is created & used to validate that the metadata is deployable, and that all unit tests are passsing.
 
