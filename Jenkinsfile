@@ -32,7 +32,13 @@ def installDependencies() {
 }
 
 def loadEnvironment(salesforceEnvironmentName) {
-    return salesforceEnvironmentName
+    //return salesforceEnvironmentName
+
+    def sfdxEnvironments = new JsonSlurper().parseText(readFile(file: 'sfdx-environments.json'));
+    println(sfdxEnvironments)
+
+    return sfdxEnvironments
+
     //def environments = readJSON file: '${env.WORKSPACE}/sfdx-environments.json'
     //def sfdxEnvironments = readJSON file: ".//sfdx-environments.json"
     //File file = new File('sfdx-environments.json')
@@ -173,6 +179,7 @@ pipeline {
                 script {
                     env.packageDirectories = getPackageDirectories()
                 }
+                loadEnvironment('Production')
                 echo "${env.packageDirectories}"
                 //getPackageDirectories()
                 // script {
