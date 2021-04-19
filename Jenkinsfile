@@ -59,26 +59,17 @@ def loadEnvironment(salesforceEnvironmentName) {
 }
 
 def getPackageDirectories() {
-//     "packageDirectories": [
-//     {
-//       "path": "force-app",
-//       "default": true
-//     }
-//   ]
-
-    def sfdxProjectJSON = readFile(file: 'sfdx-project.json')
-    //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
-    println(sfdxProjectJSON)
-    def sfdxProject = new JsonSlurper().parseText(sfdxProjectJSON);
-    println(sfdxProject.packageDirectories)
+    // def sfdxProjectJSON = readFile(file: 'sfdx-project.json')
+    // //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
+    // println(sfdxProjectJSON)
+    def sfdxProject = new JsonSlurper().parseText(readFile(file: 'sfdx-project.json'));
 
     List<String> paths = []
     for(packageDirectory in sfdxProject.packageDirectories) {
-        println(packageDirectory.path)
         paths.add(packageDirectory.path)
     }
     def packageDirectories = paths.join(',')
-    println(packageDirectories)
+    println('SFDX package directories==' + packageDirectories)
     return packageDirectories
 }
 
