@@ -32,7 +32,21 @@ def installDependencies() {
 }
 
 def loadEnvironment(salesforceEnvironmentName) {
-    return salesforceEnvironmentName
+    // return salesforceEnvironmentName
+
+    def jsonData = readFile(file: 'sfdx-environments.json')
+    def sfdxEnvironments = new JsonSlurper().parseText(jsonData);
+
+    for(environment in sfdxEnvironments) {
+        println(environment)
+    }
+
+    // List<String> paths = []
+    // for(packageDirectory in sfdxEnvironments) {
+    //     paths.add(packageDirectory.path)
+    // }
+
+    // return paths.join(',')
 
     // def sfdxEnvironments = new JsonSlurper().parseText(readFile(file: 'sfdx-environments.json'));
     // println(sfdxEnvironments)
