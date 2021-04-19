@@ -150,6 +150,12 @@ pipeline {
         // stage('Install NPM Dependencies') {
         //     steps { installDependencies() }
         // }
+        stage('Load Config Files') {
+            steps {
+                def data = readFile(file: 'sfdx-project.json')
+                println(data)
+            }
+        }
         stage('Run Apex Scanner') {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
             steps { runApexScanner() }
