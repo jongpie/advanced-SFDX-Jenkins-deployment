@@ -1,1 +1,1 @@
-upsert MyCustomSettings__c.getOrgDefaults();
+upsert MyCustomSetting__c.getOrgDefaults();
