@@ -70,8 +70,9 @@ def getPackageDirectories() {
     for(packageDirectory in sfdxProject.packageDirectories) {
         println(packageDirectory.path)
     }
-    env.packageDirectories = paths.join(',')
-    println(env.packageDirectories)
+    def packageDirectories = paths.join(',')
+    println(packageDirectories)
+    return packageDirectories
 }
 
 def convertSourceToMdapiFormat() {
