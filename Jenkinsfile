@@ -14,10 +14,10 @@ def FEATURE_PREFIX = 'feature/*'
 def BUGFIX_PREFIX  = 'bugfix/*'
 
 // Salesforce environments (stored in Jenkins credentials)
-def PRODUCTION      = loadEnvironment('Production')
-def STAGING_SANDBOX = loadEnvironment('Staging')
-def UAT_SANDBOX     = loadEnvironment('UAT')
-def QA_SANDBOX      = loadEnvironment('QA')
+def PRODUCTION      = ''//= loadEnvironment('Production')
+def STAGING_SANDBOX = ''//= loadEnvironment('Staging')
+def UAT_SANDBOX     = ''//= loadEnvironment('UAT')
+def QA_SANDBOX      = ''//= loadEnvironment('QA')
 def SCRATCH_ORG = readJSON text: '{ "name": "scratch-org" }'
 def SCRATCH_DEFINITION_FILE = "config/project-scratch-def.json"
 
