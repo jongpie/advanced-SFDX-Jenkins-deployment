@@ -241,42 +241,71 @@ pipeline {
                 }
             }
         }
-        stage('Run Post-Deployment Scripts') {
+        stage('Upsert Custom Settings') {
             when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
             parallel {
                 stage('1. Production') {
                     when  { branch MAIN_BRANCH }
                     steps {
-                        runApexScript(STAGING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         runApexScript(STAGING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                     }
                 }
                 stage('2. Staging') {
                     when  { branch HOTFIX_PREFIX }
                     steps {
-                        runApexScript(STAGING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         runApexScript(STAGING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                     }
                 }
                 stage('3. UAT') {
                     when  { branch UAT_BRANCH }
                     steps {
-                        runApexScript(UAT_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         runApexScript(UAT_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                     }
                 }
                 stage('4. QA') {
                     when  { branch DEVELOP_BRANCH }
                     steps {
-                        runApexScript(QA_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         runApexScript(QA_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                     }
                 }
                 stage('Scratch Org') {
                     when  { branch DEVELOP_BRANCH }
                     steps {
-                        runApexScript(SCRATCH_ORG, SCHEDULE_JOBS_SCRIPT)
                         runApexScript(SCRATCH_ORG, POPULATE_CUSTOM_SETTINGS_SCRIPT)
+                    }
+                }
+            }
+        stage('Schedule Apex Jobs') {
+            when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
+            parallel {
+                stage('1. Production') {
+                    when  { branch MAIN_BRANCH }
+                    steps {
+                        runApexScript(STAGING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                    }
+                }
+                stage('2. Staging') {
+                    when  { branch HOTFIX_PREFIX }
+                    steps {
+                        runApexScript(STAGING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                    }
+                }
+                stage('3. UAT') {
+                    when  { branch UAT_BRANCH }
+                    steps {
+                        runApexScript(UAT_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                    }
+                }
+                stage('4. QA') {
+                    when  { branch DEVELOP_BRANCH }
+                    steps {
+                        runApexScript(QA_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                    }
+                }
+                stage('Scratch Org') {
+                    when  { branch DEVELOP_BRANCH }
+                    steps {
+                        runApexScript(SCRATCH_ORG, SCHEDULE_JOBS_SCRIPT)
                     }
                 }
             }
