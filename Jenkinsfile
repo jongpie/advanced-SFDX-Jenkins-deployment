@@ -161,12 +161,12 @@ pipeline {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
             steps { runApexScanner() }
         }
-        stage('Run LWC Tests') {
-            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-            steps { runLwcTests() }
-        }
+        // stage('Run LWC Tests') {
+        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+        //     steps { runLwcTests() }
+        // }
         stage('Convert Source to MDAPI') {
-            when { branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH }
+            when { branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH }
             steps { convertSourceToMdapiFormat() }
         }
         stage('Deploy to Salesforce') {
@@ -208,8 +208,8 @@ pipeline {
                 stage('Scratch Org') {
                     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
-                        createScratchOrg()
-                        // deployToSalesforce(SCRATCH_ORG, true, false)
+                        // createScratchOrg()
+                        deployToSalesforce(PRODUC, false, false)
                         // //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
                         // runApexTests(SCRATCH_ORG)
                     }
