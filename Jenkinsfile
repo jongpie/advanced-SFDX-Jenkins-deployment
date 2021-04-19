@@ -364,14 +364,14 @@ pipeline {
             }
         }
     }
-    // post {
-    //     always {
-    //         junit allowEmptyResults: true, testResults: 'tests/**/*.xml'
+    post {
+        always {
+            junit allowEmptyResults: true, testResults: 'tests/**/*.xml'
 
-    //         recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
+            recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
 
-    //         cleanWs()
-    //     }
+            // cleanWs()
+        }
     //     // success {
     //     //     emailext to : "${BUILD_NOTIFICATION_EMAIL}",
     //     //         subject : 'SUCCESS: $PROJECT_NAME - #$BUILD_NUMBER',
@@ -387,5 +387,5 @@ pipeline {
     //     //         subject : 'FAILED: $PROJECT_NAME - #$BUILD_NUMBER',
     //     //         body    : 'Check console output at $BUILD_URL to view the results. <br/> Last Changes:  ${CHANGES} <br/> Last 100 lines of logs <br/> ${BUILD_LOG, maxLines=100, escapeHtml=false}'
     //     // }
-    // }
+    }
 }
