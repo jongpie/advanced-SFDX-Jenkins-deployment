@@ -75,7 +75,7 @@ def runCommand(command) {
 
 def runLwcTests() {
     echo 'Running LWC tests'
-    runCommand('npm test')
+    runCommand('sfdx-lwc-jest')
 }
 
 def authorizeEnvironment(salesforceEnvironment) {
@@ -141,8 +141,7 @@ def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName
 }
 
 def runApexScanner() {
-    echo 'TODO'
-    //runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
+    runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
 }
 
 def runApexScript(salesforceEnvironment, apexCodeFile) {
