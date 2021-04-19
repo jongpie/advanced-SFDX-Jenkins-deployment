@@ -17,6 +17,7 @@ def BUGFIX_PREFIX  = 'bugfix/*'
 def PRODUCTION      = 'Salesforce-Production'
 def STAGING_SANDBOX = 'Salesforce-Staging'
 def UAT_SANDBOX     = 'Salesforce-UAT'
+def DATAMIG_SANDBOX = 'Salesforce-DataMig'
 def QA_SANDBOX      = 'Salesforce-Production' //'Salesforce-QA' temp using prod org for testing
 def SCRATCH_ORG     = 'Salesforce-Scratch'
 def SCRATCH_DEFINITION_FILE = "config/project-scratch-def.json"
@@ -221,7 +222,17 @@ pipeline {
                         publishCommunitySite(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, 'My_Community_Site1')
                     }
                 }
-                stage('4. QA') {
+                stage('4. DataMig') {
+                    // Run a check-only validation when the git branch is 'develop'
+                    // Run a deployment when the git branch is 'uat'
+                    when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
+                    steps {
+                        authorizeEnvironment(DATAMIG_SANDBOX)
+                        deployToSalesforce(DATAMIG_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
+                        publishCommunitySite(DATAMIG_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, 'My_Community_Site1')
+                    }
+                }
+                stage('5. QA') {
                     when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         authorizeEnvironment(QA_SANDBOX)
@@ -262,7 +273,13 @@ pipeline {
                         runApexScript(UAT_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                     }
                 }
-                stage('4. QA') {
+                stage('4. DataMig') {
+                    when  { branch UAT_BRANCH }
+                    steps {
+                        runApexScript(DATAMIG_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
+                    }
+                }
+                stage('5. QA') {
                     when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         runApexScript(QA_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
@@ -291,7 +308,11 @@ pipeline {
                     when  { branch UAT_BRANCH }
                     steps { loadCsvFile(UAT_SANDBOX, 'User', 'MyExternalId__c') }
                 }
-                stage('4. QA') {
+                stage('4. DataMig') {
+                    when  { branch UAT_BRANCH }
+                    steps { loadCsvFile(DATAMIG_SANDBOX, 'User', 'MyExternalId__c') }
+                }
+                stage('5. QA') {
                     when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps { loadCsvFile(QA_SANDBOX, 'User', 'MyExternalId__c') }
                 }
@@ -322,7 +343,13 @@ pipeline {
                         runApexScript(UAT_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                     }
                 }
-                stage('4. QA') {
+                stage('4. DataMig') {
+                    when  { branch UAT_BRANCH }
+                    steps {
+                        runApexScript(DATAMIG_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                    }
+                }
+                stage('5. QA') {
                     when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         runApexScript(QA_SANDBOX, SCHEDULE_JOBS_SCRIPT)
