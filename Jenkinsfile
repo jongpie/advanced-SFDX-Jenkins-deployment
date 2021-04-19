@@ -95,7 +95,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
         if (deployOnlyDiff) {
             deployCommand = ''
         } else {
-            deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ./force-app/ --targetusername ' + salesforceEnvironment
+            deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment
         }
 
         sh label: 'Deploying Salesforce to ' + salesforceEnvironment, script: deployCommand
