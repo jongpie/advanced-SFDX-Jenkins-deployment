@@ -34,13 +34,8 @@ def installDependencies() {
 def loadEnvironment(salesforceEnvironmentName) {
     //return salesforceEnvironmentName
 
-    // def sfdxEnvironments = new JsonSlurper().parseText(readFile(file: 'sfdx-environments.json'));
-    // println(sfdxEnvironments)
-
-    def sfdxEnvironmentsJSON = readFile(file: 'sfdx-project.json')
-    //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
-    println(sfdxEnvironmentsJSON)
-    def sfdxEnvironments = new JsonSlurper().parseText(sfdxEnvironmentsJSON);
+    def sfdxEnvironments = new JsonSlurper().parseText(readFile(file: 'sfdx-environments.json'));
+    println(sfdxEnvironments)
 
     return sfdxEnvironments
 
@@ -80,9 +75,11 @@ def getPackageDirectories() {
     List<String> paths = []
     for(packageDirectory in sfdxProject.packageDirectories) {
         println(packageDirectory.path)
+        paths.add(packageDirectory.path)
     }
-    env.packageDirectories = paths.join(',')
-    println(env.packageDirectories)
+    def packageDirectories = paths.join(',')
+    println(packageDirectories)
+    return packageDirectories
 }
 
 def convertSourceToMdapiFormat() {
@@ -182,7 +179,6 @@ pipeline {
                 script {
                     env.packageDirectories = getPackageDirectories()
                 }
-                //loadEnvironment('Production')
                 echo "${env.packageDirectories}"
                 //getPackageDirectories()
                 // script {
