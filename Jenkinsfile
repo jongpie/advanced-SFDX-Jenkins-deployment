@@ -69,6 +69,7 @@ def getPackageDirectories() {
     List<String> paths = []
     for(packageDirectory in sfdxProject.packageDirectories) {
         println(packageDirectory.path)
+        paths.add(packageDirectory.path)
     }
     def packageDirectories = paths.join(',')
     println(packageDirectories)
