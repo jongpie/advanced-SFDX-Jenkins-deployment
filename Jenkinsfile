@@ -17,7 +17,7 @@ def BUGFIX_PREFIX  = 'bugfix/*'
 def PRODUCTION      = 'Salesforce-Production'
 def STAGING_SANDBOX = 'Salesforce-Staging'
 def UAT_SANDBOX     = 'Salesforce-UAT'
-def QA_SANDBOX      = 'Salesforce-QA'
+def QA_SANDBOX      = 'Salesforce-Production' //'Salesforce-QA' temp using prod org for testing
 def SCRATCH_ORG     = 'Salesforce-Scratch'
 def SCRATCH_DEFINITION_FILE = "config/project-scratch-def.json"
 
@@ -220,19 +220,19 @@ pipeline {
                     }
                 }
                 stage('4. QA') {
-                    when  { branch DEVELOP_BRANCH }
+                    when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         authorizeEnvironment(QA_SANDBOX)
                         deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, false)
-                        publishCommunitySite(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
+                        //publishCommunitySite(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
                     }
                 }
                 stage('Scratch Org') {
-                    when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
+                    when  { anyOf { branch BUGFIX_PREFIX; } }
                     steps {
                         // createScratchOrg()
-                        authorizeEnvironment(PRODUCTION)
-                        deployToSalesforce(PRODUCTION, false, false)
+                        // authorizeEnvironment(PRODUCTION)
+                        // deployToSalesforce(PRODUCTION, false, false)
                         // //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
                         // runApexTests(SCRATCH_ORG)
                     }
@@ -261,7 +261,7 @@ pipeline {
                     }
                 }
                 stage('4. QA') {
-                    when  { branch DEVELOP_BRANCH }
+                    when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         runApexScript(QA_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                     }
@@ -290,7 +290,7 @@ pipeline {
                     steps { loadCsvFile(UAT_SANDBOX, 'User', 'MyExternalId__c') }
                 }
                 stage('4. QA') {
-                    when  { branch DEVELOP_BRANCH }
+                    when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps { loadCsvFile(QA_SANDBOX, 'User', 'MyExternalId__c') }
                 }
                 stage('5. Dev') {
@@ -321,7 +321,7 @@ pipeline {
                     }
                 }
                 stage('4. QA') {
-                    when  { branch DEVELOP_BRANCH }
+                    when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         runApexScript(QA_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                     }
