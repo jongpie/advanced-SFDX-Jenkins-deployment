@@ -59,6 +59,15 @@ def getPackageDirectories() {
 //       "default": true
 //     }
 //   ]
+
+    def sfdxProjectJSON = readFile(file: 'sfdx-project.json')
+    //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
+    println(sfdxProjectJSON)
+    def sfdxProject = new JsonSlurper().parseText(sfdxProjectJSON);
+    println(sfdxProject.packageDirectories)
+    for(packageDirectory in sfdxProject.packageDirectories) {
+        println(packageDirectory)
+    }
 }
 
 def convertSourceToMdapiFormat() {
@@ -152,12 +161,13 @@ pipeline {
         // }
         stage('Load Config Files') {
             steps {
-                script {
-                    def data = readFile(file: 'sfdx-project.json')
-                    //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
-                    println(data)
-                    println(new JsonSlurper().parseText(data))
-                }
+                getPackageDirectories()
+                // script {
+                //     def data = readFile(file: 'sfdx-project.json')
+                //     //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
+                //     println(data)
+                //     println(new JsonSlurper().parseText(data).packageDirectories)
+                // }
             }
         }
         stage('Run Apex Scanner') {
