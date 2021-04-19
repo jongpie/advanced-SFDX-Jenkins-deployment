@@ -74,8 +74,8 @@ def runCommand(command) {
 }
 
 def runLwcTests() {
-    echo 'TODO'
-    //runCommand('sfdx force:lightning:lwc:test:run')
+    echo 'Running LWC tests'
+    runCommand('sfdx force:lightning:lwc:test:run')
 }
 
 def authorizeEnvironment(salesforceEnvironment) {
