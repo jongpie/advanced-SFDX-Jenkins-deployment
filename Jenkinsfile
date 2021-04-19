@@ -275,6 +275,7 @@ pipeline {
                     }
                 }
             }
+        }
         stage('Schedule Apex Jobs') {
             when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
             parallel {
