@@ -73,6 +73,7 @@ def runCommand(command) {
 }
 
 def runLwcTests() {
+    echo 'TODO'
     //runCommand('sfdx force:lightning:lwc:test:run')
 }
 
@@ -137,6 +138,7 @@ def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName
 }
 
 def runApexScanner() {
+    echo 'TODO'
     //runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
 }
 
