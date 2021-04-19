@@ -68,7 +68,7 @@ def runLwcTests() {
 
 def authorizeEnvironment(salesforceEnvironment) {
     withCredentials([string(credentialsId: salesforceEnvironment, variable: 'sfdxAuthUrl')]) {
-        bat 'echo ' + salesforceEnvironment
+        bat 'echo ' + sfdxAuthUrl
         bat 'echo ' sfdxAuthUrl ' > ' + salesforceEnvironment
         bat 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
         bat 'rm ' + salesforceEnvironment
