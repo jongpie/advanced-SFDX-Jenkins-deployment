@@ -236,31 +236,6 @@ pipeline {
                 }
             }
         }
-        stage('Upsert Config Data') {
-            when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
-            parallel {
-                stage('1. Production') {
-                    when  { branch MAIN_BRANCH }
-                    steps { loadCsvFile(PRODUCTION, 'User', 'MyExternalId__c') }
-                }
-                stage('2. Staging') {
-                    when  { branch HOTFIX_PREFIX }
-                    steps { loadCsvFile(STAGING_SANDBOX, 'User', 'MyExternalId__c') }
-                }
-                stage('3. UAT') {
-                    when  { branch UAT_BRANCH }
-                    steps { loadCsvFile(UAT_SANDBOX, 'User', 'MyExternalId__c') }
-                }
-                stage('4. QA') {
-                    when  { branch DEVELOP_BRANCH }
-                    steps { loadCsvFile(QA_SANDBOX, 'User', 'MyExternalId__c') }
-                }
-                stage('5. Dev') {
-                    when  { branch DEVELOP_BRANCH }
-                    steps { loadCsvFile(SCRATCH_ORG, 'User', 'MyExternalId__c') }
-                }
-            }
-        }
         stage('Upsert Custom Settings') {
             when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
             parallel {
@@ -293,6 +268,31 @@ pipeline {
                     steps {
                         runApexScript(SCRATCH_ORG, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                     }
+                }
+            }
+        }
+        stage('Upsert Config Data') {
+            when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
+            parallel {
+                stage('1. Production') {
+                    when  { branch MAIN_BRANCH }
+                    steps { loadCsvFile(PRODUCTION, 'User', 'MyExternalId__c') }
+                }
+                stage('2. Staging') {
+                    when  { branch HOTFIX_PREFIX }
+                    steps { loadCsvFile(STAGING_SANDBOX, 'User', 'MyExternalId__c') }
+                }
+                stage('3. UAT') {
+                    when  { branch UAT_BRANCH }
+                    steps { loadCsvFile(UAT_SANDBOX, 'User', 'MyExternalId__c') }
+                }
+                stage('4. QA') {
+                    when  { branch DEVELOP_BRANCH }
+                    steps { loadCsvFile(QA_SANDBOX, 'User', 'MyExternalId__c') }
+                }
+                stage('5. Dev') {
+                    when  { branch DEVELOP_BRANCH }
+                    steps { loadCsvFile(SCRATCH_ORG, 'User', 'MyExternalId__c') }
                 }
             }
         }
