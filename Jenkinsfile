@@ -162,10 +162,10 @@ pipeline {
                 echo "${env.sfdxPackageDirectories}"
             }
         }
-        stage('Run Apex Scanner') {
-            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-            steps { runApexScanner() }
-        }
+        // stage('Run Apex Scanner') {
+        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+        //     steps { runApexScanner() }
+        // }
         // stage('Run LWC Tests') {
         //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
         //     steps { runLwcTests() }
