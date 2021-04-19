@@ -75,7 +75,7 @@ def runCommand(command) {
 
 def runLwcTests() {
     echo 'Running LWC tests'
-    runCommand('sfdx force:lightning:lwc:test:run')
+    runCommand('sfdx-lwc-jest')
 }
 
 def authorizeEnvironment(salesforceEnvironment) {
