@@ -154,7 +154,7 @@ pipeline {
             steps {
                 script {
                     def data = readFile(file: 'sfdx-project.json')
-                    def json = new groovy.json.JsonSlurper().parse(new File('./sfdx-project.json'))
+                    def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
                     println(json.packageDirectories)
                 }
             }
