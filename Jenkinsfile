@@ -168,8 +168,8 @@ pipeline {
         // }
         stage('Load Config Files') {
             steps {
-                environment {
-                    packageDirectories = getPackageDirectories()
+                script {
+                    env.packageDirectories = getPackageDirectories()
                 }
                 echo "${env.packageDirectories}"
                 //getPackageDirectories()
