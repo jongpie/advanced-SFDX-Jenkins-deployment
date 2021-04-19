@@ -31,15 +31,19 @@ def installDependencies() {
     sh label: 'Installing npm dependencies', script: 'npm install'
 }
 
-def loadEnvironment(salesforceEnvironmentName) {
+def loadSfdxEnvironments() {//(salesforceEnvironmentName) {
     // return salesforceEnvironmentName
 
     def jsonData = readFile(file: 'sfdx-environments.json')
     def sfdxEnvironments = new JsonSlurper().parseText(jsonData);
 
+    def environmentsByName = [:]
     for(environment in sfdxEnvironments) {
-        println(environment)
+        //println(environment)
+        environmentsByName[environment.name] = environment
     }
+
+    return environmentsByName
 
     // List<String> paths = []
     // for(packageDirectory in sfdxEnvironments) {
@@ -72,7 +76,7 @@ def loadEnvironment(salesforceEnvironmentName) {
     // }
 }
 
-def getPackageDirectories() {
+def loadSfdxPackageDirectories() {
     def jsonData = readFile(file: 'sfdx-project.json')
     def sfdxProject = new JsonSlurper().parseText(jsonData);
 
@@ -170,7 +174,7 @@ def loadCsvFile(salesforceEnvironment, sobjectType, externalId) {
 pipeline {
     agent any
     // environment {
-    //    packageDirectories = getPackageDirectories()
+    //    packageDirectories = getSfdxPackageDirectories()
     // }
     stages {
         // stage('Install NPM Dependencies') {
@@ -179,11 +183,12 @@ pipeline {
         stage('Load SFDX Config') {
             steps {
                 script {
-                    env.packageDirectories = getPackageDirectories()
+                    env.sfdxPackageDirectories = loadSfdxPackageDirectories()
+                    env.sfdxEnvironments = loadSfdxEnvironments()
                 }
-                echo "${env.packageDirectories}"
-                loadEnvironment('Production')
-                //getPackageDirectories()
+                echo "${env.sfdxPackageDirectories}"
+                echo "${env.sfdxEnvironments}"
+                //loadSfdxPackageDirectories()
                 // script {
                 //     def data = readFile(file: 'sfdx-project.json')
                 //     //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
