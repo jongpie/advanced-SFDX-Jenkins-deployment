@@ -159,13 +159,20 @@ def loadCsvFile(salesforceEnvironment, sobjectType, externalId) {
 
 pipeline {
     agent any
+    // environment {
+    //    packageDirectories = getPackageDirectories()
+    // }
     stages {
         // stage('Install NPM Dependencies') {
         //     steps { installDependencies() }
         // }
         stage('Load Config Files') {
             steps {
-                getPackageDirectories()
+                environment {
+                    packageDirectories = getPackageDirectories()
+                }
+                echo "${env.packageDirectories}"
+                //getPackageDirectories()
                 // script {
                 //     def data = readFile(file: 'sfdx-project.json')
                 //     //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
