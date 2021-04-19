@@ -59,10 +59,8 @@ def loadEnvironment(salesforceEnvironmentName) {
 }
 
 def getPackageDirectories() {
-    // def sfdxProjectJSON = readFile(file: 'sfdx-project.json')
-    // //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
-    // println(sfdxProjectJSON)
-    def sfdxProject = new JsonSlurper().parseText(readFile(file: 'sfdx-project.json'));
+    def jsonData = readFile(file: 'sfdx-project.json')
+    def sfdxProject = new JsonSlurper().parseText(jsonData);
 
     List<String> paths = []
     for(packageDirectory in sfdxProject.packageDirectories) {
