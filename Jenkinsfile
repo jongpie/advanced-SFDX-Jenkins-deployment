@@ -182,6 +182,7 @@ pipeline {
                     env.packageDirectories = getPackageDirectories()
                 }
                 echo "${env.packageDirectories}"
+                loadEnvironment('Production')
                 //getPackageDirectories()
                 // script {
                 //     def data = readFile(file: 'sfdx-project.json')
