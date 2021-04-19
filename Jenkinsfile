@@ -62,6 +62,14 @@ def convertSourceToMdapiFormat() {
 
 }
 
+def runCommand(command) {
+    if (Boolean.valueOf(env.UNIX)) {
+        sh command
+    } else {
+        bat command
+    }
+}
+
 def runLwcTests() {
     bat 'sfdx force:lightning:lwc:test:run'
 }
@@ -70,9 +78,11 @@ def authorizeEnvironment(salesforceEnvironment) {
     withCredentials([string(credentialsId: salesforceEnvironment, variable: 'sfdxAuthUrl')]) {
         // bat 'echo ' + sfdxAuthUrl
         // bat 'echo ' sfdxAuthUrl ' > ' + salesforceEnvironment
+        def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
+        def deleteCommand = 'del ' + salesforceEnvironment
         writeFile(file: salesforceEnvironment, text: sfdxAuthUrl, encoding: "UTF-8")
-        bat 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
-        bat 'del ' + salesforceEnvironment
+        runCommand(authCommand)
+        runCommand(deleteCommand)
         // sh label: 'boop authorization file', script: 'echo "$sfdxAuthUrl" '
         // sh label: 'Creating authorization file', script: 'echo "$sfdxAuthUrl" > ' + salesforceEnvironment
         // sh label: 'Authorizing Salesforce environment: ' + salesforceEnvironment, script: 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
@@ -105,7 +115,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
             deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment
         }
 
-        bat deployCommand
+        runCommand(deployCommand)
         // sh label: 'Deploying Salesforce to ' + salesforceEnvironment, script: deployCommand
     } catch(Exception error) {
         if(commitChanges) {
