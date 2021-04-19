@@ -75,7 +75,7 @@ def runCommand(command) {
 
 def runLwcTests() {
     echo 'Running LWC tests'
-    runCommand('npm test:unit:coverage')
+    runCommand('npm test --coverage')
 }
 
 def authorizeEnvironment(salesforceEnvironment) {
