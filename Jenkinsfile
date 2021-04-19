@@ -61,7 +61,7 @@ def loadSfdxPackageDirectories() {
 }
 
 def convertSourceToMdapiFormat() {
-    def convertCommand = 'sfdx force:source:convert --rootdir ' + env.sfdxPackageDirectories + ' --outputdir mdapi'
+    def convertCommand = 'sfdx force:source:convert --rootdir ' + env.sfdxPackageDirectories + ' --outputdir mdapi/src'
     runCommand(convertCommand)
 }
 
@@ -113,6 +113,8 @@ def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
 
         def deployCommand;
         if (deployOnlyDiff) {
+            runCommand('sfdx sgd:source:delta --to HEAD --from HEAD^ --output ./mdapi/ --generate-delta')
+            // runCommand('sfdx sgd:source:delta --to HEAD --from HEAD^ --output . --generate-delta')
             deployCommand = ''
         } else {
             deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment
