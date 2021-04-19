@@ -104,7 +104,8 @@ def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
             deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment
         }
 
-        sh label: 'Deploying Salesforce to ' + salesforceEnvironment, script: deployCommand
+        bat deployCommand
+        // sh label: 'Deploying Salesforce to ' + salesforceEnvironment, script: deployCommand
     } catch(Exception error) {
         if(commitChanges) {
             // If we're supposed to be committing changes and there's an error, throw the error
