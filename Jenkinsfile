@@ -34,8 +34,13 @@ def installDependencies() {
 def loadEnvironment(salesforceEnvironmentName) {
     //return salesforceEnvironmentName
 
-    def sfdxEnvironments = new JsonSlurper().parseText(readFile(file: 'sfdx-environments.json'));
-    println(sfdxEnvironments)
+    // def sfdxEnvironments = new JsonSlurper().parseText(readFile(file: 'sfdx-environments.json'));
+    // println(sfdxEnvironments)
+
+    def sfdxEnvironmentsJSON = readFile(file: 'sfdx-project.json')
+    //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
+    println(sfdxEnvironmentsJSON)
+    def sfdxEnvironments = new JsonSlurper().parseText(sfdxEnvironmentsJSON);
 
     return sfdxEnvironments
 
