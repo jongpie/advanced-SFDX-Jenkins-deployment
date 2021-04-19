@@ -75,7 +75,7 @@ def runCommand(command) {
 
 def runLwcTests() {
     echo 'Running LWC tests'
-    runCommand('sfdx-lwc-jest')
+    runCommand('npm test')
 }
 
 def authorizeEnvironment(salesforceEnvironment) {
