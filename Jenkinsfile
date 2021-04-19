@@ -54,7 +54,7 @@ def loadSfdxPackageDirectories() {
     }
 
     def packageDirectories = packageDirectoryPaths.join(',')
-    println('environmentsByName==' + environmentsByName)
+    println('packageDirectories==' + packageDirectories)
     return packageDirectories
 }
 
