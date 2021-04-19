@@ -92,6 +92,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
         echo 'Starting Salesforce deployment for environment: ' + salesforceEnvironment
         echo 'commitChanges is: ' + commitChanges + deployMessage
         echo 'deployOnlyDiff is: ' + deployOnlyDiff
+        echo 'SFDX package directories: ' + env.sfdxPackageDirectories
 
         // When using SFDX's default timeout + multiple environments + multiple branches,
         // we've had issues with Jenkins jobs would continue running, waiting for a deployment result... that would never come :-(
