@@ -9,7 +9,7 @@ private class MySchedulableJob_Tests {
         Id jobId = System.schedule('TestMySchedulableJob', CRON_EXP_DAILY_AT_6, new MySchedulableJob());
 
         // Get the information from the CronTrigger API object
-        CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobId];
+        CronTrigger cronTrigger = [SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobId];
 
         // Verify the expressions are the same
         System.assertEquals(CRON_EXP_DAILY_AT_6, cronTrigger.CronExpression);
