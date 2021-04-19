@@ -14,11 +14,11 @@ def FEATURE_PREFIX = 'feature/*'
 def BUGFIX_PREFIX  = 'bugfix/*'
 
 // Salesforce environments (stored in Jenkins credentials)
-def PRODUCTION      = 'Production'
-def STAGING_SANDBOX = 'Staging'
-def UAT_SANDBOX     = 'UAT'
-def QA_SANDBOX      = 'QA'
-def SCRATCH_ORG     = 'Scratch'
+def PRODUCTION      = 'Salesforce-Production'
+def STAGING_SANDBOX = 'Salesforce-Staging'
+def UAT_SANDBOX     = 'Salesforce-UAT'
+def QA_SANDBOX      = 'Salesforce-QA'
+def SCRATCH_ORG     = 'Salesforce-Scratch'
 def SCRATCH_DEFINITION_FILE = "config/project-scratch-def.json"
 
 // Static variables
@@ -35,13 +35,13 @@ def loadSfdxEnvironments() {
     def jsonData = readFile(file: 'sfdx-environments.json')
     def sfdxEnvironments = new JsonSlurper().parseText(jsonData);
 
-    def environmentsByName = [:]
-    for(environment in sfdxEnvironments) {
-        environmentsByName[environment.name] = environment
+    def sfdxEnvironmentsByName = [:]
+    for(sfdxEnvironment in sfdxEnvironments) {
+        sfdxEnvironmentsByName[sfdxEnvironment.name] = sfdxEnvironment
     }
 
-    println('environmentsByName==' + environmentsByName)
-    return environmentsByName
+    println('sfdxEnvironmentsByName==' + sfdxEnvironmentsByName)
+    return sfdxEnvironmentsByName
 }
 
 def loadSfdxPackageDirectories() {
