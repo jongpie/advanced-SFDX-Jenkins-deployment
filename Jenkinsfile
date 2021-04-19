@@ -242,7 +242,7 @@ pipeline {
             }
         }
         stage('Upsert Custom Settings') {
-            when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
+            when     { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH } }
             parallel {
                 stage('1. Production') {
                     when  { branch MAIN_BRANCH }
@@ -277,7 +277,7 @@ pipeline {
             }
         }
         stage('Upsert Config Data') {
-            when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
+            when     { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH } }
             parallel {
                 stage('1. Production') {
                     when  { branch MAIN_BRANCH }
@@ -302,7 +302,7 @@ pipeline {
             }
         }
         stage('Schedule Apex Jobs') {
-            when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
+            when     { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH } }
             parallel {
                 stage('1. Production') {
                     when  { branch MAIN_BRANCH }
