@@ -176,7 +176,7 @@ pipeline {
         // stage('Install NPM Dependencies') {
         //     steps { installDependencies() }
         // }
-        stage('Load Config Files') {
+        stage('Load SFDX Config') {
             steps {
                 script {
                     env.packageDirectories = getPackageDirectories()
@@ -251,7 +251,7 @@ pipeline {
                 }
             }
         }
-        stage('Load Config Data') {
+        stage('Upsert Config Data') {
             when     { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
             parallel {
                 stage('1. Production') {
