@@ -209,6 +209,7 @@ pipeline {
                     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
                         // createScratchOrg()
+                        authorizeEnvironment(PRODUCTION)
                         deployToSalesforce(PRODUCTION, false, false)
                         // //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
                         // runApexTests(SCRATCH_ORG)
