@@ -152,8 +152,10 @@ pipeline {
         // }
         stage('Load Config Files') {
             steps {
-                def data = readFile(file: 'sfdx-project.json')
-                println(data)
+                script {
+                    def data = readFile(file: 'sfdx-project.json')
+                    println(data)
+                }
             }
         }
         stage('Run Apex Scanner') {
