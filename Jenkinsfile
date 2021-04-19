@@ -59,7 +59,8 @@ def loadSfdxPackageDirectories() {
 }
 
 def convertSourceToMdapiFormat() {
-
+    def convertCommand = 'sfdx force:source:convert --rootdir ' + env.sfdxPackageDirectories + ' --outputdir mdapi'
+    runCommand(convertCommand)
 }
 
 def runCommand(command) {
@@ -184,7 +185,7 @@ pipeline {
         //     steps { runLwcTests() }
         // }
         stage('Convert Source to MDAPI') {
-            when { branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH }
+            when { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
             steps { convertSourceToMdapiFormat() }
         }
         stage('Deploy to Salesforce') {
