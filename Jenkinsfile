@@ -31,61 +31,31 @@ def installDependencies() {
     sh label: 'Installing npm dependencies', script: 'npm install'
 }
 
-def loadSfdxEnvironments() {//(salesforceEnvironmentName) {
-    // return salesforceEnvironmentName
-
+def loadSfdxEnvironments() {
     def jsonData = readFile(file: 'sfdx-environments.json')
     def sfdxEnvironments = new JsonSlurper().parseText(jsonData);
 
     def environmentsByName = [:]
     for(environment in sfdxEnvironments) {
-        //println(environment)
         environmentsByName[environment.name] = environment
     }
 
+    println('environmentsByName==' + environmentsByName)
     return environmentsByName
-
-    // List<String> paths = []
-    // for(packageDirectory in sfdxEnvironments) {
-    //     paths.add(packageDirectory.path)
-    // }
-
-    // return paths.join(',')
-
-    // def sfdxEnvironments = new JsonSlurper().parseText(readFile(file: 'sfdx-environments.json'));
-    // println(sfdxEnvironments)
-
-    //return sfdxEnvironments
-
-    //def environments = readJSON file: '${env.WORKSPACE}/sfdx-environments.json'
-    //def sfdxEnvironments = readJSON file: ".//sfdx-environments.json"
-    //File file = new File('sfdx-environments.json')
-    // def sfdxEnvironments = jsonSlurper.parseText('{ "name": "John", "ID" : "1"}')
-
-
-    // def jsonSlurper = new JsonSlurper()
-    // def jsonData = jsonSlurper.parse(new File('sfdx-environments.json'))
-    // def sfdxEnvironments = readJSON text: jsonData
-
-    // def matchingEnvironment
-    // for (Object env : sfdxEnvironments) {
-    //     if (env.name == salesforceEnvironmentName) {
-    //         matchingEnvironment = env
-    //         break
-    //     }
-    // }
 }
 
 def loadSfdxPackageDirectories() {
     def jsonData = readFile(file: 'sfdx-project.json')
     def sfdxProject = new JsonSlurper().parseText(jsonData);
 
-    List<String> paths = []
+    List<String> packageDirectoryPaths = []
     for(packageDirectory in sfdxProject.packageDirectories) {
-        paths.add(packageDirectory.path)
+        packageDirectoryPaths.add(packageDirectory.path)
     }
 
-    return paths.join(',')
+    def packageDirectories = packageDirectoryPaths.join(',')
+    println('environmentsByName==' + environmentsByName)
+    return packageDirectories
 }
 
 def convertSourceToMdapiFormat() {
@@ -173,9 +143,6 @@ def loadCsvFile(salesforceEnvironment, sobjectType, externalId) {
 
 pipeline {
     agent any
-    // environment {
-    //    packageDirectories = getSfdxPackageDirectories()
-    // }
     stages {
         // stage('Install NPM Dependencies') {
         //     steps { installDependencies() }
@@ -183,18 +150,11 @@ pipeline {
         stage('Load SFDX Config') {
             steps {
                 script {
-                    env.sfdxPackageDirectories = loadSfdxPackageDirectories()
                     env.sfdxEnvironments = loadSfdxEnvironments()
+                    env.sfdxPackageDirectories = loadSfdxPackageDirectories()
                 }
-                echo "${env.sfdxPackageDirectories}"
                 echo "${env.sfdxEnvironments}"
-                //loadSfdxPackageDirectories()
-                // script {
-                //     def data = readFile(file: 'sfdx-project.json')
-                //     //def json = new groovy.json.JsonSlurper().parse(data)//new File('./sfdx-project.json'))
-                //     println(data)
-                //     println(new JsonSlurper().parseText(data).packageDirectories)
-                // }
+                echo "${env.sfdxPackageDirectories}"
             }
         }
         stage('Run Apex Scanner') {
