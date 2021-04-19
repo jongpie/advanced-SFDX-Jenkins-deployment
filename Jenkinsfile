@@ -32,12 +32,12 @@ def installDependencies() {
 }
 
 def loadEnvironment(salesforceEnvironmentName) {
-    //return salesforceEnvironmentName
+    return salesforceEnvironmentName
 
     // def sfdxEnvironments = new JsonSlurper().parseText(readFile(file: 'sfdx-environments.json'));
     // println(sfdxEnvironments)
 
-    return sfdxEnvironments
+    //return sfdxEnvironments
 
     //def environments = readJSON file: '${env.WORKSPACE}/sfdx-environments.json'
     //def sfdxEnvironments = readJSON file: ".//sfdx-environments.json"
