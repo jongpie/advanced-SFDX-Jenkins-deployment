@@ -184,7 +184,7 @@ pipeline {
                 script {
                     env.packageDirectories = getPackageDirectories()
                 }
-                loadEnvironment('Production')
+                //loadEnvironment('Production')
                 echo "${env.packageDirectories}"
                 //getPackageDirectories()
                 // script {
