@@ -162,7 +162,7 @@ def runApexTests(salesforceEnvironment) {
 def loadCsvFile(salesforceEnvironment, sobjectType, externalId) {
     def csvFile = './config/data/' + sobjectType + '.csv'
     echo 'Upserting data'
-    runCommand('sfdx force:data:bulk:upsert --sobjecttype ' + sobjectType + ' --externalid ' + externalId + ' --csvfile ' + csvFile + ' --targetusername ' + salesforceEnvironment)
+    //runCommand('sfdx force:data:bulk:upsert --sobjecttype ' + sobjectType + ' --externalid ' + externalId + ' --csvfile ' + csvFile + ' --targetusername ' + salesforceEnvironment)
 }
 
 pipeline {
