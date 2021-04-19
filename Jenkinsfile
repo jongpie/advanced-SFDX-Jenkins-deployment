@@ -69,6 +69,9 @@ def runLwcTests() {
 def authorizeEnvironment(salesforceEnvironment) {
     withCredentials([string(credentialsId: salesforceEnvironment, variable: 'sfdxAuthUrl')]) {
         bat 'echo ' + salesforceEnvironment
+        bat 'echo "$sfdxAuthUrl" > ' + salesforceEnvironment
+        bat 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
+        bat 'rm ' + salesforceEnvironment
         // sh label: 'boop authorization file', script: 'echo "$sfdxAuthUrl" '
         // sh label: 'Creating authorization file', script: 'echo "$sfdxAuthUrl" > ' + salesforceEnvironment
         // sh label: 'Authorizing Salesforce environment: ' + salesforceEnvironment, script: 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
