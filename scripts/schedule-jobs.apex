@@ -1,2 +1,1 @@
-//System.schedule(new MySchedulableJob());
-System.debug('TODO!');
+System.schedule(new MySchedulableJob());
