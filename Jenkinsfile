@@ -66,7 +66,7 @@ def getPackageDirectories() {
     def sfdxProject = new JsonSlurper().parseText(sfdxProjectJSON);
     println(sfdxProject.packageDirectories)
     for(packageDirectory in sfdxProject.packageDirectories) {
-        println(packageDirectory)
+        println(packageDirectory.path)
     }
 }
 
