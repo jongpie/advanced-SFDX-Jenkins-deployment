@@ -65,9 +65,13 @@ def getPackageDirectories() {
     println(sfdxProjectJSON)
     def sfdxProject = new JsonSlurper().parseText(sfdxProjectJSON);
     println(sfdxProject.packageDirectories)
+
+    List<String> paths = []
     for(packageDirectory in sfdxProject.packageDirectories) {
         println(packageDirectory.path)
     }
+    env.packageDirectories = paths.join(',')
+    println(env.packageDirectories)
 }
 
 def convertSourceToMdapiFormat() {
