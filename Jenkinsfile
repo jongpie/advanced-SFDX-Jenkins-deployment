@@ -316,7 +316,7 @@ pipeline {
                     when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps { loadCsvFile(QA_SANDBOX, 'User', 'MyExternalId__c') }
                 }
-                stage('5. Dev') {
+                stage('Scratch Org') {
                     when  { branch DEVELOP_BRANCH }
                     steps { loadCsvFile(SCRATCH_ORG, 'User', 'MyExternalId__c') }
                 }
