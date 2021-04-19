@@ -171,9 +171,9 @@ def loadCsvFile(salesforceEnvironment, sobjectType, externalId) {
 pipeline {
     agent any
     stages {
-        // stage('Install NPM Dependencies') {
-        //     steps { installDependencies() }
-        // }
+        stage('Install NPM Dependencies') {
+            steps { installDependencies() }
+        }
         stage('Load SFDX Config') {
             steps {
                 script {
