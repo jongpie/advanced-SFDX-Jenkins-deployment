@@ -72,7 +72,7 @@ def authorizeEnvironment(salesforceEnvironment) {
         // bat 'echo ' sfdxAuthUrl ' > ' + salesforceEnvironment
         writeFile(file: salesforceEnvironment, text: sfdxAuthUrl, encoding: "UTF-8")
         bat 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
-        bat 'rm ' + salesforceEnvironment
+        bat 'del ' + salesforceEnvironment
         // sh label: 'boop authorization file', script: 'echo "$sfdxAuthUrl" '
         // sh label: 'Creating authorization file', script: 'echo "$sfdxAuthUrl" > ' + salesforceEnvironment
         // sh label: 'Authorizing Salesforce environment: ' + salesforceEnvironment, script: 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
