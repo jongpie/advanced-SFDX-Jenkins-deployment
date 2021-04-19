@@ -230,7 +230,7 @@ pipeline {
                 stage('Scratch Org') {
                     when  { anyOf { branch BUGFIX_PREFIX; } }
                     steps {
-                        // createScratchOrg()
+                        createScratchOrg()
                         // authorizeEnvironment(PRODUCTION)
                         // deployToSalesforce(PRODUCTION, false, false)
                         // //publishCommunitySite(SCRATCH_ORG, env.BRANCH_NAME == DEVELOP_BRANCH, 'My_Community_Site1')
