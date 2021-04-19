@@ -28,7 +28,8 @@ def SCRATCH_DEFINITION_FILE = "config/project-scratch-def.json"
 
 // Methods for commands
 def installDependencies() {
-    sh label: 'Installing npm dependencies', script: 'npm install'
+    echo 'Installing npm dependencies'
+    runCommand('npm install')
 }
 
 def loadSfdxEnvironments() {
@@ -72,28 +73,27 @@ def runCommand(command) {
 }
 
 def runLwcTests() {
-    bat 'sfdx force:lightning:lwc:test:run'
+    runCommand('sfdx force:lightning:lwc:test:run')
 }
 
 def authorizeEnvironment(salesforceEnvironment) {
     withCredentials([string(credentialsId: salesforceEnvironment, variable: 'sfdxAuthUrl')]) {
-        // bat 'echo ' + sfdxAuthUrl
-        // bat 'echo ' sfdxAuthUrl ' > ' + salesforceEnvironment
         def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
-        def deleteCommand = 'del ' + salesforceEnvironment
+        def deleteCommand;
+        if (Boolean.valueOf(env.UNIX)) {
+            deleteCommand = 'rm ' + salesforceEnvironment
+        } else {
+            deleteCommand = 'del ' + salesforceEnvironment
+        }
+
         writeFile(file: salesforceEnvironment, text: sfdxAuthUrl, encoding: "UTF-8")
         runCommand(authCommand)
         runCommand(deleteCommand)
-        // sh label: 'boop authorization file', script: 'echo "$sfdxAuthUrl" '
-        // sh label: 'Creating authorization file', script: 'echo "$sfdxAuthUrl" > ' + salesforceEnvironment
-        // sh label: 'Authorizing Salesforce environment: ' + salesforceEnvironment, script: 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
-        // sh label: 'Purging authorization file', script: 'rm ' + salesforceEnvironment
     }
 }
 
 def createScratchOrg() {
-    //sh label: 'TODO - create scratch org', script: 'echo TODOoooOO'
-    bat 'echo TODO make a scratch org!'
+    runCommand('echo TODO make a scratch org!')
 }
 
 def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
@@ -117,7 +117,6 @@ def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
         }
 
         runCommand(deployCommand)
-        // sh label: 'Deploying Salesforce to ' + salesforceEnvironment, script: deployCommand
     } catch(Exception error) {
         if(commitChanges) {
             // If we're supposed to be committing changes and there's an error, throw the error
@@ -131,23 +130,26 @@ def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
 
 def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName) {
     if(commitChanges) {
-        sh label: 'Publishing Community Cloud site in ' + salesforceEnvironment, script: 'sfdx force:community:publish --name "SF Assessor Office"' + ' --targetusername ' + salesforceEnvironment
+        echo 'Publishing Community Cloud site in ' + salesforceEnvironment
+        def publishCommand = 'sfdx force:community:publish --name "SF Assessor Office"' + ' --targetusername ' + salesforceEnvironment
+        runCommand(publishCommand)
     }
 }
 
 def runApexScanner() {
-    //sh label: 'Running SFDX Scanner', script: 'sfdx scanner:run'
-    bat 'sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml'
+    runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
 }
 
 def runApexScript(salesforceEnvironment, apexCodeFile) {
-    sh label: 'Executing Apex script in ' + salesforceEnvironment, script: 'sfdx force:apex:execute --apexcodefile ' + apexCodeFile + ' --targetusername ' + salesforceEnvironment
+    echo 'Executing Apex script in ' + salesforceEnvironment
+    runCommand('sfdx force:apex:execute --apexcodefile ' + apexCodeFile + ' --targetusername ' + salesforceEnvironment)
 }
 
 def runApexTests(salesforceEnvironment) {
     try {
         def outputDirectory = './tests/' + salesforceEnvironment
-        sh label: 'Executing Apex tests in ' + salesforceEnvironment, script: 'sfdx force:apex:test:run --testlevel RunLocalTests --outputdir ' + outputDirectory + ' --resultformat tap --targetusername ' + salesforceEnvironment
+        echo 'Executing Apex tests in ' + salesforceEnvironment
+        runCommand('sfdx force:apex:test:run --testlevel RunLocalTests --outputdir ' + outputDirectory + ' --resultformat tap --targetusername ' + salesforceEnvironment)
     } catch(Exception error) {
         // If any tests fail, SFDX throws an exception, which fails the build
         // We mark the build as unstable instead of failing it
@@ -157,7 +159,8 @@ def runApexTests(salesforceEnvironment) {
 
 def loadCsvFile(salesforceEnvironment, sobjectType, externalId) {
     def csvFile = './config/data/' + sobjectType + '.csv'
-    sh label: 'Upserting data', script: 'sfdx force:data:bulk:upsert --sobjecttype ' + sobjectType + ' --externalid ' + externalId + ' --csvfile ' + csvFile + ' --targetusername ' + salesforceEnvironment
+    echo 'Upserting data'
+    runCommand('sfdx force:data:bulk:upsert --sobjecttype ' + sobjectType + ' --externalid ' + externalId + ' --csvfile ' + csvFile + ' --targetusername ' + salesforceEnvironment)
 }
 
 pipeline {
