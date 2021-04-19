@@ -73,7 +73,7 @@ def runCommand(command) {
 }
 
 def runLwcTests() {
-    runCommand('sfdx force:lightning:lwc:test:run')
+    //runCommand('sfdx force:lightning:lwc:test:run')
 }
 
 def authorizeEnvironment(salesforceEnvironment) {
@@ -137,7 +137,7 @@ def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName
 }
 
 def runApexScanner() {
-    runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
+    //runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
 }
 
 def runApexScript(salesforceEnvironment, apexCodeFile) {
@@ -179,14 +179,14 @@ pipeline {
                 echo "${env.sfdxPackageDirectories}"
             }
         }
-        // stage('Run Apex Scanner') {
-        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-        //     steps { runApexScanner() }
-        // }
-        // stage('Run LWC Tests') {
-        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-        //     steps { runLwcTests() }
-        // }
+        stage('Run Apex Scanner') {
+            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+            steps { runApexScanner() }
+        }
+        stage('Run LWC Tests') {
+            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+            steps { runLwcTests() }
+        }
         stage('Convert Source to MDAPI') {
             when { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
             steps { convertSourceToMdapiFormat() }
