@@ -186,7 +186,12 @@ pipeline {
         }
         stage('Run Apex Scanner') {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-            steps { PROJECT_SCRIPTS.runApexScanner() }
+            steps {
+                script {
+                    PROJECT_SCRIPTS = load 'Jenkinsfile.scripts.groovy'
+                    PROJECT_SCRIPTS.runApexScanner()
+                }
+            }
         }
         stage('Run LWC Tests') {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
