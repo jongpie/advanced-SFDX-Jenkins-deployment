@@ -54,12 +54,11 @@ If you want to leverage this same approach for your project, then you'll want to
 
 ## Required Software/Tools
 
--   Jenkins server
--   Jenkins plugins
-    -   Blue Ocean
-    -   (Warnings Next Generation)[https://plugins.jenkins.io/warnings-ng/]
-    -   (Pipeline Utility Steps)[https://plugins.jenkins.io/pipeline-utility-steps/]
--   SFDX (Salesforce CLI) installed on the Jenkins server/build agents
+-   [Jenkins server](https://jenkins.io) with these plugins
+    -   [Blue Ocean](https://plugins.jenkins.io/blueocean)
+    -   [Warnings Next Generation](https://plugins.jenkins.io/warnings-ng/)
+    -   [Pipeline Utility Steps](https://plugins.jenkins.io/pipeline-utility-steps/)
+-   [SFDX (Salesforce CLI)](https://developer.salesforce.com/tools/sfdxcli) installed on the Jenkins server/build agents
 
 ## Salesforce Environments
 
