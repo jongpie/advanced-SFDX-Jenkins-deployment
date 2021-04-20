@@ -27,7 +27,8 @@ The deployment process itself is controlled by `Jenkinsfile` (stored in the repo
 
 If you want to leverage this same approach for your project, then you'll want to use these files:
 
--   [Jenkinsfile](Jenkinsfile) - this tells Jenkins how to run the deployment (using SFDX commands)
+-   [Jenkinsfile](Jenkinsfile) - this contains the Jenkins pipeline definition, which tells Jenkins how to run the deployment (using SFDX commands)
+-   [Jenkinsfile.scripts.groovy](Jenkinsfile.scripts.groovy) - this custom file contains several scripts used by `Jenkinsfile` (primarily, SFDX commands)
 -   [sfdx-environments.json](sfdx-environments.json) - a custom JSON file that contains details about your Salesforce environments. This is used by Jenkins when deploying.
 -   [sfdx-project.json](sfdx-project.json) - any metadata with the `packageDirectories` paths is deployed by Jenkins. Multiple directories/paths (shown below) are also supported:
     ```json
