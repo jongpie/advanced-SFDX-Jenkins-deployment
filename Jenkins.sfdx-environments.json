@@ -22,7 +22,7 @@
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [
             {
-                "csvFile": "data/Accounts.csv",
+                "csvFile": "./data/Accounts.csv",
                 "sobjectType": "Account",
                 "externalIdField": "MyExternalId__c"
             }
@@ -36,7 +36,7 @@
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [
             {
-                "csvFile": "data/Accounts.csv",
+                "csvFile": "./data/Accounts.csv",
                 "sobjectType": "Account",
                 "externalIdField": "MyExternalId__c"
             }
