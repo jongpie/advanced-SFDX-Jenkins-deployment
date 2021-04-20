@@ -4,52 +4,52 @@
         "isDevHub": true,
         "deployOnlyDiff": true,
         "jenkinsCredentialsName": "Salesforce-Production",
-        "experienceSites": [],
-        "csvData": [
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": [
             {
                 "csvFile": "data/Accounts.csv",
                 "sobjectType": "Account",
                 "externalIdField": "MyExternalId__c"
             }
         ],
-        "postDeploymentScripts": ["/scripts/schedule-jobs.apex", "/scripts/populate-custom-settings.apex"]
+        "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
     },
     {
         "name": "Staging",
         "isDevHub": false,
         "deployOnlyDiff": false,
         "jenkinsCredentialsName": "Salesforce-Staging-sandbox",
-        "experienceSites": [],
-        "csvData": [
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": [
             {
                 "csvFile": "data/Accounts.csv",
                 "sobjectType": "Account",
                 "externalIdField": "MyExternalId__c"
             }
         ],
-        "postDeploymentScripts": ["/scripts/schedule-jobs.apex", "/scripts/populate-custom-settings.apex"]
+        "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
     },
     {
         "name": "UAT",
         "isDevHub": false,
         "deployOnlyDiff": false,
         "jenkinsCredentialsName": "Salesforce-UAT-sandbox",
-        "experienceSites": [],
-        "csvData": [
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": [
             {
                 "csvFile": "data/Accounts.csv",
                 "sobjectType": "Account",
                 "externalIdField": "MyExternalId__c"
             }
         ],
-        "postDeploymentScripts": ["/scripts/schedule-jobs.apex", "/scripts/populate-custom-settings.apex"]
+        "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
     },
     {
         "name": "QA",
         "isDevHub": false,
         "deployOnlyDiff": false,
         "jenkinsCredentialsName": "Salesforce-QA-sandbox",
-        "experienceSites": [],
-        "postDeploymentScripts": ["/scripts/schedule-jobs.apex"]
+        "experienceSitesToPublish": [],
+        "postDeploymentScripts": ["./scripts/schedule-jobs.apex"]
     }
 ]
