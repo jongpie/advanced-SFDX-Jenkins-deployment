@@ -4,9 +4,9 @@
 def SFDX_SCRIPTS
 
 // Primary git branches
-def MAIN_BRANCH           = 'main'
-def UAT_BRANCH            = 'uat'
-def DEVELOP_BRANCH        = 'develop'
+def MAIN_BRANCH    = 'main'
+def UAT_BRANCH     = 'uat'
+def DEVELOP_BRANCH = 'develop'
 
 // Git branch prefixes
 def RELEASE_PREFIX = 'release/*'
@@ -26,7 +26,7 @@ def SCRATCH_ORG_DEFINITION_FILE = './config/project-scratch-def.json'
 
 // Static variables
 // def BUILD_NOTIFICATION_EMAIL = 'someone@test.com'
-def SCHEDULE_JOBS_SCRIPT     = './scripts/schedule-jobs.apex'
+def SCHEDULE_JOBS_SCRIPT = './scripts/schedule-jobs.apex'
 def POPULATE_CUSTOM_SETTINGS_SCRIPT = './scripts/populate-custom-settings.apex'
 
 pipeline {
