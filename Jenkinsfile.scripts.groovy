@@ -57,7 +57,8 @@ def runLwcTests() {
 }
 
 def authorizeEnvironment(salesforceEnvironmentName) {
-    def salesforceEnvironment = loadSfdxEnvironments()[salesforceEnvironmentName]
+    def salesforceEnvironmentsByName = loadSfdxEnvironments()
+    def salesforceEnvironment = salesforceEnvironmentsByName[salesforceEnvironmentName]
     def jenkinsCredentialsName = salesforceEnvironment.jenkinsCredentialsName
 
     withCredentials([string(credentialsId: jenkinsCredentialsName, variable: 'sfdxAuthUrl')]) {
