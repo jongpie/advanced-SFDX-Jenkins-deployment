@@ -8,7 +8,20 @@ This repository is an example of how you can deploy to multiple Salesforce envio
 
 ## What It Looks Like
 
+When new commits are pushed to `feature/*` and `bugfix/*` branches, a new scratch org is automatically used to deploy the metadata and run Apex test results
 ![Pipeline: Feature Branch Deployment](./content/pipeline-feature-branch-deployment.png)
+
+When new commits are pushed to the `develop` branch, the metadata is automatically deployed to the `QA` sandbox for internal testing.
+![Pipeline: Develop Branch Deployment](./content/pipeline-develop-branch-deployment.png)
+
+When new commits are pushed to the `uat` branch, the metadata is automatically deployed to the `UAT` sandbox for user acceptance testing.
+![Pipeline: UAT Branch Deployment](./content/pipeline-uat-branch-deployment.png)
+
+When new commits are pushed to `release/*` branches, the metadata is automatically deployed to the `Staging` sandbox for pre-production validation.
+![Pipeline: Release Branch Deployment](./content/pipeline-release-branch-deployment.png)
+
+When new commits are pushed to the `main` branch, the metadata is automatically deployed in parallel to the both `Production` and the `Training` sandbox.
+![Pipeline: Main Branch Deployment](./content/pipeline-main-branch-deployment.png)
 
 ## What It Does
 
