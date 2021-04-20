@@ -55,7 +55,7 @@ def convertSourceToMdapiFormat() {
 }
 
 def runApexScanner() {
-    runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
+    runCommand('sfdx scanner:run --target "./**/*cls" --format junit --outfile scanner-results.xml')
 }
 
 def runLwcTests() {
