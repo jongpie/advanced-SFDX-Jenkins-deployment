@@ -71,7 +71,7 @@ pipeline {
                     when  { anyOf { branch RELEASE_PREFIX; branch MAIN_BRANCH } }
                     steps {
                         script {
-                            authorizeEnvironment(PRODUCTION)
+                            authorizeEnvironment(env.sfdxEnvironments[PRODUCTION])
                             deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH, true)
                         }
                     }
@@ -80,7 +80,7 @@ pipeline {
                     when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
-                            authorizeEnvironment(STAGING_SANDBOX)
+                            authorizeEnvironment(env.sfdxEnvironments[STAGING_SANDBOX])
                             deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, false)
                         }
                     }
@@ -91,7 +91,7 @@ pipeline {
                     when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
                     steps {
                         script {
-                            authorizeEnvironment(UAT_SANDBOX)
+                            authorizeEnvironment(env.sfdxEnvironments[UAT_SANDBOX])
                             deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
                         }
                     }
@@ -102,7 +102,7 @@ pipeline {
                     when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
                     steps {
                         script {
-                            authorizeEnvironment(DATAMIG_SANDBOX)
+                            authorizeEnvironment(env.sfdxEnvironments[DATAMIG_SANDBOX])
                             deployToSalesforce(DATAMIG_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
                         }
                     }
@@ -111,7 +111,7 @@ pipeline {
                     when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
-                            authorizeEnvironment(QA_SANDBOX)
+                            authorizeEnvironment(env.sfdxEnvironments[QA_SANDBOX])
                             deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, false)
                         }
                     }
@@ -121,7 +121,7 @@ pipeline {
                     steps {
                         script {
                             createScratchOrg()
-                            // authorizeEnvironment(PRODUCTION)
+                            // authorizeEnvironment(env.sfdxEnvironments[PRODUCTION])
                             // deployToSalesforce(PRODUCTION, false, false)
                             // runApexTests(SCRATCH_ORG)
                         }
@@ -189,7 +189,7 @@ pipeline {
                     when  { branch MAIN_BRANCH }
                     steps {
                         script {
-                            loadCsvFile(PRODUCTION, 'User', 'MyExternalId__c')
+                            upsertCsvFiles(PRODUCTION)
                         }
                     }
                 }
@@ -197,7 +197,7 @@ pipeline {
                     when  { branch HOTFIX_PREFIX }
                     steps {
                         script {
-                            loadCsvFile(STAGING_SANDBOX, 'User', 'MyExternalId__c')
+                            upsertCsvFiles(STAGING_SANDBOX)
                         }
                     }
                 }
@@ -205,7 +205,7 @@ pipeline {
                     when  { branch UAT_BRANCH }
                     steps {
                         script {
-                            loadCsvFile(UAT_SANDBOX, 'User', 'MyExternalId__c')
+                            upsertCsvFiles(UAT_SANDBOX)
                         }
                     }
                 }
@@ -213,7 +213,7 @@ pipeline {
                     when  { branch UAT_BRANCH }
                     steps {
                         script {
-                            loadCsvFile(DATAMIG_SANDBOX, 'User', 'MyExternalId__c')
+                            upsertCsvFiles(DATAMIG_SANDBOX)
                         }
                     }
                 }
@@ -221,7 +221,7 @@ pipeline {
                     when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
-                            loadCsvFile(QA_SANDBOX, 'User', 'MyExternalId__c')
+                            upsertCsvFiles(QA_SANDBOX)
                         }
                     }
                 }
@@ -229,7 +229,7 @@ pipeline {
                     when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
-                            loadCsvFile(SCRATCH_ORG, 'User', 'MyExternalId__c')
+                            upsertCsvFiles(SCRATCH_ORG)
                         }
                     }
                 }

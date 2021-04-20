@@ -3,8 +3,8 @@
         "name": "Production",
         "deployOnlyDiff": true,
         "jenkinsCredentialsName": "Salesforce-production",
-        "experienceSites": ["My_Community_Site1"],
-        "configData": [
+        "experienceSites": [],
+        "csvData": [
             {
                 "csvFile": "data/Accounts.csv",
                 "sobjectType": "Account",
@@ -17,8 +17,8 @@
         "name": "Staging",
         "deployOnlyDiff": false,
         "jenkinsCredentialsName": "Salesforce-staging-sandbox",
-        "experienceSites": ["My_Community_Site1"],
-        "configData": [
+        "experienceSites": [],
+        "csvData": [
             {
                 "csvFile": "data/Accounts.csv",
                 "sobjectType": "Account",
@@ -31,8 +31,8 @@
         "name": "UAT",
         "deployOnlyDiff": false,
         "jenkinsCredentialsName": "Salesforce-uat-sandbox",
-        "experienceSites": ["My_Community_Site1"],
-        "configData": [
+        "experienceSites": [],
+        "csvData": [
             {
                 "csvFile": "data/Accounts.csv",
                 "sobjectType": "Account",
@@ -45,7 +45,7 @@
         "name": "QA",
         "deployOnlyDiff": false,
         "jenkinsCredentialsName": "Salesforce-uat-sandbox",
-        "experienceSites": ["My_Community_Site1"],
+        "experienceSites": [],
         "postDeploymentScripts": ["/scripts/schedule-jobs.apex"]
     }
 ]
