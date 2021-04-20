@@ -15,12 +15,12 @@ def FEATURE_PREFIX = 'feature/*'
 def BUGFIX_PREFIX  = 'bugfix/*'
 
 // Salesforce environments (stored in Jenkins credentials)
-def PRODUCTION      = 'Salesforce-Production'
-def STAGING_SANDBOX = 'Salesforce-Staging'
-def UAT_SANDBOX     = 'Salesforce-UAT'
-def DATAMIG_SANDBOX = 'Salesforce-DataMig'
-def QA_SANDBOX      = 'Salesforce-Production' //'Salesforce-QA' temp using prod org for testing
-def SCRATCH_ORG     = 'Salesforce-Scratch'
+def PRODUCTION      = 'Production'
+def STAGING_SANDBOX = 'Staging'
+def UAT_SANDBOX     = 'UAT'
+def DATAMIG_SANDBOX = 'DataMig'
+def QA_SANDBOX      = 'Production' //'Salesforce-QA' temp using prod org for testing
+def SCRATCH_ORG     = 'Scratch'
 def SCRATCH_DEFINITION_FILE = "config/project-scratch-def.json"
 
 // Static variables
