@@ -188,7 +188,6 @@ pipeline {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
             steps {
                 script {
-                    PROJECT_SCRIPTS = load 'Jenkinsfile.scripts.groovy'
                     PROJECT_SCRIPTS.runApexScanner()
                 }
             }
