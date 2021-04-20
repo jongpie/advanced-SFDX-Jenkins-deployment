@@ -15,6 +15,17 @@ def installDependencies() {
     runCommand('npm install')
 }
 
+def loadSfdxEnvironment(salesforceEnvironmentName) {
+    //TODO use a map, make this less dumb
+    def environment
+    for (sfdxEnvironment in loadSfdxEnvironments()) {
+        if (sfdxEnvironment.name == salesforceEnvironmentName) {
+            environment = sfdxEnvironment
+        }
+    }
+    return environment
+}
+
 def loadSfdxEnvironments() {
     def jsonData = readFile(file: 'Jenkins.sfdx-environments.json')
     def sfdxEnvironments = new JsonSlurper().parseText(jsonData);
@@ -56,19 +67,21 @@ def runLwcTests() {
     runCommand('npm test --coverage')
 }
 
-def authorizeEnvironment(salesforceEnvironment) {
-    def salesforceEnvironmentName = 'Salesforce-Production'
+def authorizeEnvironment(salesforceEnvironmentName) {
+    def sfdxEnvironment = loadSfdxEnvironment(salesforceEnvironmentName)
+    println(sfdxEnvironment)
+    def salesforceCredentialsId = 'Salesforce-Production'
 
-    withCredentials([string(credentialsId: salesforceEnvironmentName, variable: 'sfdxAuthUrl')]) {
-        def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironmentName + ' --setalias ' + salesforceEnvironmentName
+    withCredentials([string(credentialsId: salesforceCredentialsId, variable: 'sfdxAuthUrl')]) {
+        def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceCredentialsId + ' --setalias ' + salesforceCredentialsId
         def deleteCommand;
         if (Boolean.valueOf(env.UNIX)) {
-            deleteCommand = 'rm ' + salesforceEnvironmentName
+            deleteCommand = 'rm ' + salesforceCredentialsId
         } else {
-            deleteCommand = 'del ' + salesforceEnvironmentName
+            deleteCommand = 'del ' + salesforceCredentialsId
         }
 
-        writeFile(file: salesforceEnvironmentName, text: sfdxAuthUrl, encoding: "UTF-8")
+        writeFile(file: salesforceCredentialsId, text: sfdxAuthUrl, encoding: 'UTF-8')
         runCommand(authCommand)
         runCommand(deleteCommand)
     }
