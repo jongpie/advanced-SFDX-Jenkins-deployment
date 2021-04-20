@@ -108,7 +108,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
         def deployCommand;
         if (deployOnlyDiff) {
             runCommand('sfdx sgd:source:delta --to HEAD --from HEAD^ --output ./mdapi/ --generate-delta')
-            runCommand('mv ./mdapi/destructiveChanges/destructiveChanges.xml ./mdapi/package/destructiveChangesPre.xml')
+            runCommand('mv ./mdapi/destructiveChanges/destructiveChanges.xml ./mdapi/package/destructiveChangesPost.xml')
             deployCommand = 'sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment
         } else {
             deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment
