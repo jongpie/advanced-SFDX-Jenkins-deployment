@@ -1,5 +1,15 @@
 import groovy.json.JsonSlurper
 
+// Generic commands
+def runCommand(command) {
+    if (Boolean.valueOf(env.UNIX)) {
+        sh command
+    } else {
+        bat command
+    }
+}
+
+// Local commands
 def installDependencies() {
     echo 'Installing npm dependencies'
     runCommand('npm install')
@@ -37,12 +47,8 @@ def convertSourceToMdapiFormat() {
     runCommand(convertCommand)
 }
 
-def runCommand(command) {
-    if (Boolean.valueOf(env.UNIX)) {
-        sh command
-    } else {
-        bat command
-    }
+def runApexScanner() {
+    runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
 }
 
 def runLwcTests() {
@@ -50,24 +56,51 @@ def runLwcTests() {
     runCommand('npm test --coverage')
 }
 
-def authorizeEnvironment(salesforceEnvironment) {
-    withCredentials([string(credentialsId: salesforceEnvironment, variable: 'sfdxAuthUrl')]) {
-        def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
+def authorizeEnvironment(salesforceEnvironmentName) {
+    // println('salesforceEnvironmentName==' + salesforceEnvironmentName)
+    def salesforceEnvironmentsByName = loadSfdxEnvironments()
+    // println('salesforceEnvironmentsByName==' + salesforceEnvironmentsByName)
+    def salesforceEnvironment = salesforceEnvironmentsByName[salesforceEnvironmentName]
+    // println('salesforceEnvironment==' + salesforceEnvironment)
+    def jenkinsCredentialsName = salesforceEnvironment.jenkinsCredentialsName
+    // println('jenkinsCredentialsName==' + jenkinsCredentialsName)
+
+    withCredentials([string(credentialsId: jenkinsCredentialsName, variable: 'sfdxAuthUrl')]) {
+        def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + jenkinsCredentialsName + ' --setalias ' + jenkinsCredentialsName
         def deleteCommand;
         if (Boolean.valueOf(env.UNIX)) {
-            deleteCommand = 'rm ' + salesforceEnvironment
+            deleteCommand = 'rm ' + jenkinsCredentialsName
         } else {
-            deleteCommand = 'del ' + salesforceEnvironment
+            deleteCommand = 'del ' + jenkinsCredentialsName
         }
+        echo 'made it here'
 
-        writeFile(file: salesforceEnvironment, text: sfdxAuthUrl, encoding: "UTF-8")
+        // def fileExists = fileExists jenkinsCredentialsName
+        // if (fileExists jenkinsCredentialsName) {
+        //     echo 'deleting existing file + made it here'
+        //     runCommand(deleteCommand)
+        // }
+println('salesforceEnvironmentName==' + salesforceEnvironmentName)
+println('salesforceEnvironmentsByName==' + salesforceEnvironmentsByName)
+println('salesforceEnvironment==' + salesforceEnvironment)
+println('jenkinsCredentialsName==' + jenkinsCredentialsName)
+
+        writeFile(file: jenkinsCredentialsName, text: sfdxAuthUrl, encoding: 'UTF-8')
+        echo 'and made it here'
         runCommand(authCommand)
+        echo 'and also made it here'
         runCommand(deleteCommand)
+        echo 'and finally made it here'
     }
 }
 
+// Remote commands
 def createScratchOrg() {
     runCommand('echo TODO make a scratch org!')
+}
+
+def pushToScratchOrg(salesforceEnvironment) {
+
 }
 
 def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
@@ -112,10 +145,6 @@ def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName
     }
 }
 
-def runApexScanner() {
-    runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
-}
-
 def runApexScript(salesforceEnvironment, apexCodeFile) {
     echo 'Executing Apex script in ' + salesforceEnvironment
     runCommand('sfdx force:apex:execute --apexcodefile ' + apexCodeFile + ' --targetusername ' + salesforceEnvironment)
@@ -133,7 +162,7 @@ def runApexTests(salesforceEnvironment) {
     }
 }
 
-def loadCsvFile(salesforceEnvironment, sobjectType, externalId) {
+def upsertCsvFiles(salesforceEnvironment, sobjectType, externalId) {
     def csvFile = './config/data/' + sobjectType + '.csv'
     echo 'Upserting data'
     //runCommand('sfdx force:data:bulk:upsert --sobjecttype ' + sobjectType + ' --externalid ' + externalId + ' --csvfile ' + csvFile + ' --targetusername ' + salesforceEnvironment)
