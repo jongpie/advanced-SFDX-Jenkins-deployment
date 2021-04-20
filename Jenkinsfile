@@ -43,30 +43,30 @@ pipeline {
                 }
             }
         }
-        // stage('Run Apex Scanner') {
-        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-        //     steps {
-        //         script {
-        //             SFDX_SCRIPTS.runApexScanner()
-        //         }
-        //     }
-        // }
-        // stage('Run LWC Tests') {
-        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-        //     steps {
-        //         script {
-        //             SFDX_SCRIPTS.runLwcTests()
-        //         }
-        //     }
-        // }
-        // stage('Convert Source to MDAPI') {
-        //     when { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
-        //     steps {
-        //         script {
-        //             SFDX_SCRIPTS.convertSourceToMdapiFormat()
-        //         }
-        //     }
-        // }
+        stage('Run Apex Scanner') {
+            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+            steps {
+                script {
+                    SFDX_SCRIPTS.runApexScanner()
+                }
+            }
+        }
+        stage('Run LWC Tests') {
+            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+            steps {
+                script {
+                    SFDX_SCRIPTS.runLwcTests()
+                }
+            }
+        }
+        stage('Convert Source to MDAPI') {
+            when { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
+            steps {
+                script {
+                    SFDX_SCRIPTS.convertSourceToMdapiFormat()
+                }
+            }
+        }
         stage('Deploy to Salesforce') {
             parallel {
                 stage('1. Production') {
@@ -108,7 +108,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
@@ -165,7 +165,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
                             SFDX_SCRIPTS.runApexScript(QA_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
@@ -218,7 +218,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
                             SFDX_SCRIPTS.upsertCsvFiles(QA_SANDBOX)
@@ -271,7 +271,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
                             SFDX_SCRIPTS.runApexScript(QA_SANDBOX, SCHEDULE_JOBS_SCRIPT)
