@@ -74,7 +74,14 @@ def authorizeEnvironment(salesforceEnvironmentName) {
             deleteCommand = 'del ' + jenkinsCredentialsName
         }
         echo 'made it here'
-        writeFile(file: jenkinsCredentialsName, text: sfdxAuthUrl, encoding: "UTF-8")
+
+        def fileExists = fileExists jenkinsCredentialsName
+        if (fileExists) {
+             echo 'deleting existing file + made it here'
+            runCommand(deleteCommand)
+        }
+
+        writeFile(file: jenkinsCredentialsName, text: sfdxAuthUrl, encoding: 'UTF-8')
         echo 'and made it here'
         runCommand(authCommand)
         echo 'and also made it here'
