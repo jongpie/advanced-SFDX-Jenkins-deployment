@@ -66,12 +66,12 @@ def authorizeEnvironment(salesforceEnvironmentName) {
     // println('jenkinsCredentialsName==' + jenkinsCredentialsName)
 
     withCredentials([string(credentialsId: jenkinsCredentialsName, variable: 'sfdxAuthUrl')]) {
-        def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + jenkinsCredentialsName + ' --setalias ' + jenkinsCredentialsName
+        def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + 'hello' + ' --setalias ' + 'hello'
         def deleteCommand;
         if (Boolean.valueOf(env.UNIX)) {
-            deleteCommand = 'rm ' + jenkinsCredentialsName
+            deleteCommand = 'rm ' + 'hello'
         } else {
-            deleteCommand = 'del ' + jenkinsCredentialsName
+            deleteCommand = 'del ' + 'hello'
         }
         echo 'made it here'
 
@@ -83,9 +83,9 @@ def authorizeEnvironment(salesforceEnvironmentName) {
 println('salesforceEnvironmentName==' + salesforceEnvironmentName)
 println('salesforceEnvironmentsByName==' + salesforceEnvironmentsByName)
 println('salesforceEnvironment==' + salesforceEnvironment)
-println('jenkinsCredentialsName==' + jenkinsCredentialsName)
+println('jenkinsCredentialsName==' + 'hello')
 
-        writeFile(file: jenkinsCredentialsName, text: sfdxAuthUrl, encoding: 'UTF-8')
+        writeFile(file: 'hello', text: sfdxAuthUrl, encoding: 'UTF-8')
         echo 'and made it here'
         runCommand(authCommand)
         echo 'and also made it here'
