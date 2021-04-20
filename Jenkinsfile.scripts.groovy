@@ -73,10 +73,13 @@ def authorizeEnvironment(salesforceEnvironmentName) {
         } else {
             deleteCommand = 'del ' + jenkinsCredentialsName
         }
-
+        echo 'made it here'
         writeFile(file: jenkinsCredentialsName, text: sfdxAuthUrl, encoding: "UTF-8")
+        echo 'and made it here'
         runCommand(authCommand)
+        echo 'and also made it here'
         runCommand(deleteCommand)
+        echo 'and finally made it here'
     }
 }
 
