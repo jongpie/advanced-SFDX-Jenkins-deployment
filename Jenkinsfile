@@ -71,7 +71,7 @@ pipeline {
                     when  { anyOf { branch RELEASE_PREFIX; branch MAIN_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(env.sfdxEnvironments[PRODUCTION])
+                            PROJECT_SCRIPTS.authorizeEnvironment(PRODUCTION)
                             PROJECT_SCRIPTS.deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH, true)
                         }
                     }
@@ -80,7 +80,7 @@ pipeline {
                     when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(env.sfdxEnvironments[STAGING_SANDBOX])
+                            PROJECT_SCRIPTS.authorizeEnvironment(STAGING_SANDBOX)
                             PROJECT_SCRIPTS.deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, false)
                         }
                     }
@@ -91,7 +91,7 @@ pipeline {
                     when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(env.sfdxEnvironments[UAT_SANDBOX])
+                            PROJECT_SCRIPTS.authorizeEnvironment(UAT_SANDBOX)
                             PROJECT_SCRIPTS.deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
                         }
                     }
@@ -102,7 +102,7 @@ pipeline {
                     when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(env.sfdxEnvironments[DATAMIG_SANDBOX])
+                            PROJECT_SCRIPTS.authorizeEnvironment(DATAMIG_SANDBOX)
                             PROJECT_SCRIPTS.deployToSalesforce(DATAMIG_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
                         }
                     }
@@ -111,7 +111,7 @@ pipeline {
                     when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(env.sfdxEnvironments[QA_SANDBOX])
+                            PROJECT_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
                             PROJECT_SCRIPTS.deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, false)
                         }
                     }
@@ -121,7 +121,7 @@ pipeline {
                     steps {
                         script {
                             PROJECT_SCRIPTS.createScratchOrg()
-                            // authorizeEnvironment(env.sfdxEnvironments[PRODUCTION])
+                            // authorizeEnvironment(PRODUCTION)
                             // deployToSalesforce(PRODUCTION, false, false)
                             // runApexTests(SCRATCH_ORG)
                         }
