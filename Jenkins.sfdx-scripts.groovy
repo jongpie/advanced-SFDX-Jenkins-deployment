@@ -147,7 +147,7 @@ def runApexTests(salesforceEnvironment) {
     }
 }
 
-def upsertCsvFiles(salesforceEnvironment, sobjectType, externalId) {
+def upsertCsvFiles(salesforceEnvironment) {//}, sobjectType, externalId) {
     def csvFile = './config/data/' + sobjectType + '.csv'
     echo 'Upserting data'
     //runCommand('sfdx force:data:bulk:upsert --sobjecttype ' + sobjectType + ' --externalid ' + externalId + ' --csvfile ' + csvFile + ' --targetusername ' + salesforceEnvironment)

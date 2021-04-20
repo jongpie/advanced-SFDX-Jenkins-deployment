@@ -1,7 +1,7 @@
 // Jenkins build pipeline for Salesforce
 
 // Import SFDX scripts
-def PROJECT_SCRIPTS
+def SFDX_SCRIPTS
 
 // Primary git branches
 def MAIN_BRANCH           = 'main'
@@ -36,10 +36,10 @@ pipeline {
         stage('Load Dependencies') {
             steps {
                 script {
-                    PROJECT_SCRIPTS = load 'Jenkins.sfdx-scripts.groovy'
-                    PROJECT_SCRIPTS.installDependencies()
-                    env.sfdxEnvironments = PROJECT_SCRIPTS.loadSfdxEnvironments()
-                    env.sfdxPackageDirectories = PROJECT_SCRIPTS.loadSfdxPackageDirectories()
+                    SFDX_SCRIPTS = load 'Jenkins.sfdx-scripts.groovy'
+                    SFDX_SCRIPTS.installDependencies()
+                    env.sfdxEnvironments = SFDX_SCRIPTS.loadSfdxEnvironments()
+                    env.sfdxPackageDirectories = SFDX_SCRIPTS.loadSfdxPackageDirectories()
                 }
             }
         }
@@ -47,7 +47,7 @@ pipeline {
         //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
         //     steps {
         //         script {
-        //             PROJECT_SCRIPTS.runApexScanner()
+        //             SFDX_SCRIPTS.runApexScanner()
         //         }
         //     }
         // }
@@ -55,7 +55,7 @@ pipeline {
         //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
         //     steps {
         //         script {
-        //             PROJECT_SCRIPTS.runLwcTests()
+        //             SFDX_SCRIPTS.runLwcTests()
         //         }
         //     }
         // }
@@ -63,7 +63,7 @@ pipeline {
         //     when { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
         //     steps {
         //         script {
-        //             PROJECT_SCRIPTS.convertSourceToMdapiFormat()
+        //             SFDX_SCRIPTS.convertSourceToMdapiFormat()
         //         }
         //     }
         // }
@@ -73,8 +73,8 @@ pipeline {
                     when  { anyOf { branch RELEASE_PREFIX; branch MAIN_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(PRODUCTION)
-                            PROJECT_SCRIPTS.deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH, true)
+                            SFDX_SCRIPTS.authorizeEnvironment(PRODUCTION)
+                            SFDX_SCRIPTS.deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH, true)
                         }
                     }
                 }
@@ -82,8 +82,8 @@ pipeline {
                     when  { branch MAIN_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(TRAINING_SANDBOX)
-                            PROJECT_SCRIPTS.deployToSalesforce(TRAINING_SANDBOX, env.BRANCH_NAME == MAIN_BRANCH, false)
+                            SFDX_SCRIPTS.authorizeEnvironment(TRAINING_SANDBOX)
+                            SFDX_SCRIPTS.deployToSalesforce(TRAINING_SANDBOX, env.BRANCH_NAME == MAIN_BRANCH, false)
                         }
                     }
                 }
@@ -91,8 +91,8 @@ pipeline {
                     when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(STAGING_SANDBOX)
-                            PROJECT_SCRIPTS.deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, false)
+                            SFDX_SCRIPTS.authorizeEnvironment(STAGING_SANDBOX)
+                            SFDX_SCRIPTS.deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, false)
                         }
                     }
                 }
@@ -102,8 +102,8 @@ pipeline {
                     when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(UAT_SANDBOX)
-                            PROJECT_SCRIPTS.deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
+                            SFDX_SCRIPTS.authorizeEnvironment(UAT_SANDBOX)
+                            SFDX_SCRIPTS.deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
                         }
                     }
                 }
@@ -111,8 +111,8 @@ pipeline {
                     when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
-                            PROJECT_SCRIPTS.deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, false)
+                            SFDX_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
+                            SFDX_SCRIPTS.deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, false)
                         }
                     }
                 }
@@ -120,7 +120,7 @@ pipeline {
                     when  { anyOf { branch BUGFIX_PREFIX; } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.createScratchOrg()
+                            SFDX_SCRIPTS.createScratchOrg()
                             // authorizeEnvironment(PRODUCTION)
                             // deployToSalesforce(PRODUCTION, false, false)
                             // runApexTests(SCRATCH_ORG)
@@ -136,7 +136,7 @@ pipeline {
                     when  { branch MAIN_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(STAGING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(STAGING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                         }
                     }
                 }
@@ -144,7 +144,7 @@ pipeline {
                     when  { branch MAIN_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(TRAINING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(TRAINING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                         }
                     }
                 }
@@ -152,7 +152,7 @@ pipeline {
                     when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(STAGING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(STAGING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                         }
                     }
                 }
@@ -160,7 +160,7 @@ pipeline {
                     when  { branch UAT_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(UAT_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(UAT_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                         }
                     }
                 }
@@ -168,7 +168,7 @@ pipeline {
                     when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(QA_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(QA_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                         }
                     }
                 }
@@ -176,20 +176,20 @@ pipeline {
                     when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(SCRATCH_ORG, POPULATE_CUSTOM_SETTINGS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(SCRATCH_ORG, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                         }
                     }
                 }
             }
         }
-        stage('Upsert Config Data') {
+        stage('Upsert CSV Data') {
             when     { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH } }
             parallel {
                 stage('1. Production') {
                     when  { branch MAIN_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.upsertCsvFiles(PRODUCTION)
+                            SFDX_SCRIPTS.upsertCsvFiles(PRODUCTION)
                         }
                     }
                 }
@@ -197,7 +197,7 @@ pipeline {
                     when  { branch MAIN_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.upsertCsvFiles(TRAINING_SANDBOX)
+                            SFDX_SCRIPTS.upsertCsvFiles(TRAINING_SANDBOX)
                         }
                     }
                 }
@@ -205,7 +205,7 @@ pipeline {
                     when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.upsertCsvFiles(STAGING_SANDBOX)
+                            SFDX_SCRIPTS.upsertCsvFiles(STAGING_SANDBOX)
                         }
                     }
                 }
@@ -213,7 +213,7 @@ pipeline {
                     when  { branch UAT_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.upsertCsvFiles(UAT_SANDBOX)
+                            SFDX_SCRIPTS.upsertCsvFiles(UAT_SANDBOX)
                         }
                     }
                 }
@@ -221,7 +221,7 @@ pipeline {
                     when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.upsertCsvFiles(QA_SANDBOX)
+                            SFDX_SCRIPTS.upsertCsvFiles(QA_SANDBOX)
                         }
                     }
                 }
@@ -229,7 +229,7 @@ pipeline {
                     when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.upsertCsvFiles(SCRATCH_ORG)
+                            SFDX_SCRIPTS.upsertCsvFiles(SCRATCH_ORG)
                         }
                     }
                 }
@@ -242,7 +242,7 @@ pipeline {
                     when  { branch MAIN_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(STAGING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(STAGING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         }
                     }
                 }
@@ -250,7 +250,7 @@ pipeline {
                     when  { branch MAIN_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(TRAINING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(TRAINING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         }
                     }
                 }
@@ -258,7 +258,7 @@ pipeline {
                     when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(STAGING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(STAGING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         }
                     }
                 }
@@ -266,7 +266,7 @@ pipeline {
                     when  { branch UAT_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(UAT_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(UAT_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         }
                     }
                 }
@@ -274,7 +274,7 @@ pipeline {
                     when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(QA_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(QA_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         }
                     }
                 }
@@ -282,7 +282,7 @@ pipeline {
                     when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
-                            PROJECT_SCRIPTS.runApexScript(SCRATCH_ORG, SCHEDULE_JOBS_SCRIPT)
+                            SFDX_SCRIPTS.runApexScript(SCRATCH_ORG, SCHEDULE_JOBS_SCRIPT)
                         }
                     }
                 }
