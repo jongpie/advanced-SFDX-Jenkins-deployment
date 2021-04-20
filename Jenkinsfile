@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 
 
 // Import SFDX scripts
-def PROJECT_SCRIPTS = load('Jenkinsfile.scripts.groovy')
+def PROJECT_SCRIPTS// = load('Jenkinsfile.scripts.groovy')
 
 // Primary git branches
 def MAIN_BRANCH           = 'main'
