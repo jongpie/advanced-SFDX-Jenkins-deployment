@@ -59,7 +59,7 @@ pipeline {
             }
         }
         stage('Convert Source to MDAPI') {
-            when { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
+            when { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
             steps {
                 script {
                     SFDX_SCRIPTS.convertSourceToMdapiFormat()
@@ -96,8 +96,6 @@ pipeline {
                     }
                 }
                 stage('4. UAT') {
-                    // Run a check-only validation when the git branch is 'develop'
-                    // Run a deployment when the git branch is 'uat'
                     when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
                     steps {
                         script {
@@ -107,7 +105,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
@@ -119,9 +117,10 @@ pipeline {
                     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
                         script {
-                            SFDX_SCRIPTS.createScratchOrg(SCRATCH_ORG_DEFINITION_FILE, env.BRANCH_NAME)
+                            SFDX_SCRIPTS.createScratchOrg(env.BRANCH_NAME, SCRATCH_ORG_DEFINITION_FILE)
                             SFDX_SCRIPTS.pushToScratchOrg(env.BRANCH_NAME)
                             SFDX_SCRIPTS.runScratchOrgApexTests(env.BRANCH_NAME)
+                            SFDX_SCRIPTS.deleteScratchOrg(env.BRANCH_NAME)
                         }
                     }
                 }

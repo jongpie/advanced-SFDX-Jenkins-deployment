@@ -80,13 +80,22 @@ def authorizeEnvironment(salesforceEnvironment) {
 }
 
 // Scratch org commands
-def createScratchOrg(scratchDefinitionFile, scratchOrgAlias) {
+def createScratchOrg(scratchOrgAlias, scratchDefinitionFile) {
     scratchOrgAlias = scratchOrgAlias.replace('/', '-')
 
-    runCommand('echo TODO make a scratch org!')
+    echo 'Creating scratch org alias: ' + scratchOrgAlias
     // TODO get the dev hub from Jenkins.sfdx-environments.json
     def createScratchOrgCommand = 'sfdx force:org:create --definitionfile ' + scratchDefinitionFile + ' --setalias ' + scratchOrgAlias + ' --durationdays 1'
     runCommand(createScratchOrgCommand)
+}
+
+def deleteScratchOrg(scratchOrgAlias) {
+    scratchOrgAlias = scratchOrgAlias.replace('/', '-')
+
+    echo 'Deleting scratch org alias: ' + scratchOrgAlias
+    // TODO get the dev hub from Jenkins.sfdx-environments.json
+    def deleteScratchOrgCommand = 'sfdx force:org:delete --noprompt --targetusername ' + scratchOrgAlias
+    runCommand(deleteScratchOrgCommand)
 }
 
 def pushToScratchOrg(scratchOrgAlias) {
