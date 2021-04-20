@@ -267,23 +267,6 @@ pipeline {
             junit allowEmptyResults: true, testResults: 'tests/**/*.xml'
 
             recordIssues enabledForFailure: true, tool: pmdParser(pattern: 'scanner-results.xml')
-
-            // cleanWs()
         }
-    //     // success {
-    //     //     emailext to : "${BUILD_NOTIFICATION_EMAIL}",
-    //     //         subject : 'SUCCESS: $PROJECT_NAME - #$BUILD_NUMBER',
-    //     //         body    : 'Build Successful $PROJECT_NAME - #$BUILD_NUMBER'
-    //     // }
-    //     // unstable {
-    //     //     emailext to : "${BUILD_NOTIFICATION_EMAIL}",
-    //     //         subject : 'UNSTABLE: $PROJECT_NAME - #$BUILD_NUMBER',
-    //     //         body    : 'Check console output at $BUILD_URL to view the results. <br/> Last Changes: ${CHANGES} <br/> Last 100 lines of logs <br/> ${BUILD_LOG, maxLines=100, escapeHtml=false}'
-    //     // }
-    //     // failure {
-    //     //     emailext to : "${BUILD_NOTIFICATION_EMAIL};${env.FAILURE_NOTIFICATION_EMAIL}",
-    //     //         subject : 'FAILED: $PROJECT_NAME - #$BUILD_NUMBER',
-    //     //         body    : 'Check console output at $BUILD_URL to view the results. <br/> Last Changes:  ${CHANGES} <br/> Last 100 lines of logs <br/> ${BUILD_LOG, maxLines=100, escapeHtml=false}'
-    //     // }
     }
 }
