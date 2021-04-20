@@ -57,6 +57,8 @@ def runLwcTests() {
 }
 
 def authorizeEnvironment(salesforceEnvironment) {
+    salesforceEnvironment = 'Salesforce-Production'
+
     withCredentials([string(credentialsId: salesforceEnvironment, variable: 'sfdxAuthUrl')]) {
         def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
         def deleteCommand;
