@@ -106,7 +106,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { branch FEATURE_PREFIX; branch DEVELOP_BRANCH }
+                    when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
                             PROJECT_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
@@ -216,7 +216,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
                             PROJECT_SCRIPTS.upsertCsvFiles(QA_SANDBOX)
@@ -269,7 +269,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
                             PROJECT_SCRIPTS.runApexScript(QA_SANDBOX, SCHEDULE_JOBS_SCRIPT)
