@@ -147,7 +147,7 @@ pipeline {
                     }
                 }
                 stage('3. Staging') {
-                    when  { branch HOTFIX_PREFIX }
+                    when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
                             PROJECT_SCRIPTS.runApexScript(STAGING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
@@ -163,7 +163,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
                             PROJECT_SCRIPTS.runApexScript(QA_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
@@ -200,7 +200,7 @@ pipeline {
                     }
                 }
                 stage('3. Staging') {
-                    when  { branch HOTFIX_PREFIX }
+                    when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
                             PROJECT_SCRIPTS.upsertCsvFiles(STAGING_SANDBOX)
@@ -253,7 +253,7 @@ pipeline {
                     }
                 }
                 stage('3. Staging') {
-                    when  { branch HOTFIX_PREFIX }
+                    when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
                             PROJECT_SCRIPTS.runApexScript(STAGING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
