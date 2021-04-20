@@ -113,17 +113,17 @@ pipeline {
                         }
                     }
                 }
-                stage('Scratch Org') {
-                    when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
-                    steps {
-                        script {
-                            SFDX_SCRIPTS.createScratchOrg(env.BRANCH_NAME, SCRATCH_ORG_DEFINITION_FILE)
-                            SFDX_SCRIPTS.pushToScratchOrg(env.BRANCH_NAME)
-                            SFDX_SCRIPTS.runScratchOrgApexTests(env.BRANCH_NAME)
-                            SFDX_SCRIPTS.deleteScratchOrg(env.BRANCH_NAME)
-                        }
-                    }
-                }
+                // stage('Scratch Org') {
+                //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
+                //     steps {
+                //         script {
+                //             SFDX_SCRIPTS.createScratchOrg(env.BRANCH_NAME, SCRATCH_ORG_DEFINITION_FILE)
+                //             SFDX_SCRIPTS.pushToScratchOrg(env.BRANCH_NAME)
+                //             SFDX_SCRIPTS.runScratchOrgApexTests(env.BRANCH_NAME)
+                //             SFDX_SCRIPTS.deleteScratchOrg(env.BRANCH_NAME)
+                //         }
+                //     }
+                // }
             }
         }
         stage('Upsert Custom Settings') {
