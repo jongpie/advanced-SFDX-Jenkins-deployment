@@ -21,9 +21,8 @@ def STAGING_SANDBOX  = 'Salesforce-Staging'
 def UAT_SANDBOX      = 'Salesforce-UAT'
 def QA_SANDBOX       = 'Salesforce-Production' //'Salesforce-QA' temp using prod org for testing
 
-// Salesforce scratch org details
-def SCRATCH_ORG = 'Scratch'
-def SCRATCH_DEFINITION_FILE = "config/project-scratch-def.json"
+// Salesforce scratch org config
+def SCRATCH_ORG_DEFINITION_FILE = './config/project-scratch-def.json'
 
 // Static variables
 // def BUILD_NOTIFICATION_EMAIL = 'someone@test.com'
@@ -117,13 +116,12 @@ pipeline {
                     }
                 }
                 stage('Scratch Org') {
-                    when  { anyOf { branch BUGFIX_PREFIX; } }
+                    when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
                         script {
-                            SFDX_SCRIPTS.createScratchOrg()
-                            // authorizeEnvironment(PRODUCTION)
-                            // deployToSalesforce(PRODUCTION, false, false)
-                            // runApexTests(SCRATCH_ORG)
+                            SFDX_SCRIPTS.createScratchOrg(SCRATCH_ORG_DEFINITION_FILE, env.BRANCH_NAME) {
+                            SFDX_SCRIPTS.pushToScratchOrg(env.BRANCH_NAME) {
+                            SFDX_SCRIPTS.runScratchOrgApexTests(env.BRANCH_NAME)
                         }
                     }
                 }

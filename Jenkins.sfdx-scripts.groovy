@@ -79,15 +79,38 @@ def authorizeEnvironment(salesforceEnvironment) {
     }
 }
 
-// Remote commands
-def createScratchOrg() {
+// Scratch org commands
+def createScratchOrg(scratchDefinitionFile, scratchOrgAlias) {
+    scratchOrgAlias = scratchOrgAlias.replace('/', '-')
+
     runCommand('echo TODO make a scratch org!')
+    // TODO get the dev hub from Jenkins.sfdx-environments.json
+    def createScratchOrgCommand = 'sfdx force:org:create --definitionfile ' + scratchDefinitionFile + ' --setalias ' + scratchOrgAlias + ' --durationdays 1'
+    runCommand(createScratchOrgCommand)
 }
 
-def pushToScratchOrg(salesforceEnvironment) {
+def pushToScratchOrg(scratchOrgAlias) {
+    scratchOrgAlias = scratchOrgAlias.replace('/', '-')
 
+    def pushCommand = 'sfdx force:source:push --targetusername ' + scratchOrgAlias
+    runCommand(pushCommand)
 }
 
+def runScratchOrgApexTests(scratchOrgAlias) {
+    scratchOrgAlias = scratchOrgAlias.replace('/', '-')
+
+    // try {
+        def outputDirectory = './tests/' + scratchOrgAlias
+        echo 'Executing Apex tests in ' + scratchOrgAlias
+        runCommand('sfdx force:apex:test:run --testlevel RunLocalTests --outputdir ' + outputDirectory + ' --resultformat tap --targetusername ' + scratchOrgAlias)
+    // } catch(Exception error) {
+    //     // If any tests fail, SFDX throws an exception, which fails the build
+    //     // We mark the build as unstable instead of failing it
+    //     unstable('Apex test failure')
+    // }
+}
+
+// Deploy commands
 def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
     try {
         def checkOnlyParam = commitChanges ? '' : ' --checkonly --testlevel RunLocalTests'
@@ -133,18 +156,6 @@ def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName
 def runApexScript(salesforceEnvironment, apexCodeFile) {
     echo 'Executing Apex script in ' + salesforceEnvironment
     runCommand('sfdx force:apex:execute --apexcodefile ' + apexCodeFile + ' --targetusername ' + salesforceEnvironment)
-}
-
-def runApexTests(salesforceEnvironment) {
-    try {
-        def outputDirectory = './tests/' + salesforceEnvironment
-        echo 'Executing Apex tests in ' + salesforceEnvironment
-        runCommand('sfdx force:apex:test:run --testlevel RunLocalTests --outputdir ' + outputDirectory + ' --resultformat tap --targetusername ' + salesforceEnvironment)
-    } catch(Exception error) {
-        // If any tests fail, SFDX throws an exception, which fails the build
-        // We mark the build as unstable instead of failing it
-        unstable('Apex test failure')
-    }
 }
 
 def upsertCsvFiles(salesforceEnvironment) {//}, sobjectType, externalId) {
