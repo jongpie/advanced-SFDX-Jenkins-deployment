@@ -177,7 +177,7 @@ pipeline {
         stage('Load Dependencies') {
             steps {
                 script {
-                    PROJECT_SCRIPTS.installDependencies()
+                    PROJECT_SCRIPTS = load 'Jenkinsfile.scripts.groovy'//.installDependencies()
                     env.sfdxEnvironments = loadSfdxEnvironments()
                     env.sfdxPackageDirectories = loadSfdxPackageDirectories()
                 }
