@@ -15,12 +15,12 @@ def FEATURE_PREFIX = 'feature/*'
 def BUGFIX_PREFIX  = 'bugfix/*'
 
 // Salesforce environments (stored in Jenkins credentials)
-def PRODUCTION      = 'Production'
-def STAGING_SANDBOX = 'Staging'
-def UAT_SANDBOX     = 'UAT'
-def DATAMIG_SANDBOX = 'DataMig'
-def QA_SANDBOX      = 'Production' //'Salesforce-QA' temp using prod org for testing
-def SCRATCH_ORG     = 'Scratch'
+def PRODUCTION       = 'Production'
+def TRAINING_SANDBOX  = 'DataMig'
+def STAGING_SANDBOX  = 'Staging'
+def UAT_SANDBOX = 'Training'
+def QA_SANDBOX       = 'Production' //'Salesforce-QA' temp using prod org for testing
+def SCRATCH_ORG      = 'Scratch'
 def SCRATCH_DEFINITION_FILE = "config/project-scratch-def.json"
 
 // Static variables
@@ -76,7 +76,16 @@ pipeline {
                         }
                     }
                 }
-                stage('2. Staging') {
+                stage('2. Training') {
+                    when  { branch MAIN_BRANCH }
+                    steps {
+                        script {
+                            PROJECT_SCRIPTS.authorizeEnvironment(TRAINING_SANDBOX)
+                            PROJECT_SCRIPTS.deployToSalesforce(TRAINING_SANDBOX, env.BRANCH_NAME == MAIN_BRANCH, false)
+                        }
+                    }
+                }
+                stage('3. Staging') {
                     when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
                     steps {
                         script {
@@ -85,7 +94,7 @@ pipeline {
                         }
                     }
                 }
-                stage('3. UAT') {
+                stage('4. UAT') {
                     // Run a check-only validation when the git branch is 'develop'
                     // Run a deployment when the git branch is 'uat'
                     when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
@@ -96,19 +105,8 @@ pipeline {
                         }
                     }
                 }
-                stage('4. DataMig') {
-                    // Run a check-only validation when the git branch is 'develop'
-                    // Run a deployment when the git branch is 'uat'
-                    when  { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH } }
-                    steps {
-                        script {
-                            PROJECT_SCRIPTS.authorizeEnvironment(DATAMIG_SANDBOX)
-                            PROJECT_SCRIPTS.deployToSalesforce(DATAMIG_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
-                        }
-                    }
-                }
                 stage('5. QA') {
-                    when  { anyOf {branch FEATURE_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { branch FEATURE_PREFIX; branch DEVELOP_BRANCH }
                     steps {
                         script {
                             PROJECT_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
@@ -140,7 +138,15 @@ pipeline {
                         }
                     }
                 }
-                stage('2. Staging') {
+                stage('4. Training') {
+                    when  { branch UAT_BRANCH }
+                    steps {
+                        script {
+                            PROJECT_SCRIPTS.runApexScript(TRAINING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
+                        }
+                    }
+                }
+                stage('3. Staging') {
                     when  { branch HOTFIX_PREFIX }
                     steps {
                         script {
@@ -148,19 +154,11 @@ pipeline {
                         }
                     }
                 }
-                stage('3. UAT') {
+                stage('4. UAT') {
                     when  { branch UAT_BRANCH }
                     steps {
                         script {
                             PROJECT_SCRIPTS.runApexScript(UAT_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
-                        }
-                    }
-                }
-                stage('4. DataMig') {
-                    when  { branch UAT_BRANCH }
-                    steps {
-                        script {
-                            PROJECT_SCRIPTS.runApexScript(DATAMIG_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
                         }
                     }
                 }
@@ -193,7 +191,15 @@ pipeline {
                         }
                     }
                 }
-                stage('2. Staging') {
+                stage('2. Training') {
+                    when  { branch MAIN_BRANCH }
+                    steps {
+                        script {
+                            PROJECT_SCRIPTS.upsertCsvFiles(TRAINING_SANDBOX)
+                        }
+                    }
+                }
+                stage('3. Staging') {
                     when  { branch HOTFIX_PREFIX }
                     steps {
                         script {
@@ -201,19 +207,11 @@ pipeline {
                         }
                     }
                 }
-                stage('3. UAT') {
+                stage('4. UAT') {
                     when  { branch UAT_BRANCH }
                     steps {
                         script {
                             PROJECT_SCRIPTS.upsertCsvFiles(UAT_SANDBOX)
-                        }
-                    }
-                }
-                stage('4. DataMig') {
-                    when  { branch UAT_BRANCH }
-                    steps {
-                        script {
-                            PROJECT_SCRIPTS.upsertCsvFiles(DATAMIG_SANDBOX)
                         }
                     }
                 }
@@ -246,7 +244,15 @@ pipeline {
                         }
                     }
                 }
-                stage('2. Staging') {
+                stage('2. Training') {
+                    when  { branch MAIN_BRANCH }
+                    steps {
+                        script {
+                            PROJECT_SCRIPTS.runApexScript(TRAINING_SANDBOX, SCHEDULE_JOBS_SCRIPT)
+                        }
+                    }
+                }
+                stage('3. Staging') {
                     when  { branch HOTFIX_PREFIX }
                     steps {
                         script {
@@ -254,19 +260,11 @@ pipeline {
                         }
                     }
                 }
-                stage('3. UAT') {
+                stage('4. UAT') {
                     when  { branch UAT_BRANCH }
                     steps {
                         script {
                             PROJECT_SCRIPTS.runApexScript(UAT_SANDBOX, SCHEDULE_JOBS_SCRIPT)
-                        }
-                    }
-                }
-                stage('4. DataMig') {
-                    when  { branch UAT_BRANCH }
-                    steps {
-                        script {
-                            PROJECT_SCRIPTS.runApexScript(DATAMIG_SANDBOX, SCHEDULE_JOBS_SCRIPT)
                         }
                     }
                 }

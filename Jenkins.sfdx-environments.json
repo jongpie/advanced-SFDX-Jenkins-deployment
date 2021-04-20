@@ -5,13 +5,16 @@
         "deployOnlyDiff": true,
         "jenkinsCredentialsName": "Salesforce-Production",
         "experienceSitesToPublish": [],
-        "csvDataToUpsert": [
-            {
-                "csvFile": "data/Accounts.csv",
-                "sobjectType": "Account",
-                "externalIdField": "MyExternalId__c"
-            }
-        ],
+        "csvDataToUpsert": [],
+        "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
+    },
+    {
+        "name": "Training",
+        "isDevHub": false,
+        "deployOnlyDiff": false,
+        "jenkinsCredentialsName": "Salesforce-Training-sandbox",
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": [],
         "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
     },
     {
