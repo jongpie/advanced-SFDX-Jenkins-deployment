@@ -138,7 +138,7 @@ pipeline {
                         }
                     }
                 }
-                stage('4. Training') {
+                stage('2. Training') {
                     when  { branch UAT_BRANCH }
                     steps {
                         script {
