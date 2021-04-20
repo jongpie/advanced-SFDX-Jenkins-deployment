@@ -144,9 +144,9 @@ def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName
     }
 }
 
-def runApexScanner() {
-    runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
-}
+// def runApexScanner() {
+//     runCommand('sfdx scanner:run --target "force-app" --engine "pmd" --format junit --outfile scanner/results.xml')
+// }
 
 def runApexScript(salesforceEnvironment, apexCodeFile) {
     echo 'Executing Apex script in ' + salesforceEnvironment
@@ -179,14 +179,14 @@ pipeline {
                 script {
                     PROJECT_SCRIPTS = load 'Jenkinsfile.scripts.groovy'
                     PROJECT_SCRIPTS.installDependencies()
-                    env.sfdxEnvironments = loadSfdxEnvironments()
-                    env.sfdxPackageDirectories = loadSfdxPackageDirectories()
+                    env.sfdxEnvironments = PROJECT_SCRIPTS.loadSfdxEnvironments()
+                    env.sfdxPackageDirectories = PROJECT_SCRIPTS.loadSfdxPackageDirectories()
                 }
             }
         }
         stage('Run Apex Scanner') {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-            steps { runApexScanner() }
+            steps { PROJECT_SCRIPTS.runApexScanner() }
         }
         stage('Run LWC Tests') {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
