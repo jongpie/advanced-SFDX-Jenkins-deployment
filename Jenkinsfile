@@ -2,6 +2,10 @@
 
 import groovy.json.JsonSlurper
 
+
+// Import SFDX scripts
+def scripts = load('Jenkinsfile.scripts.groovy')
+
 // Primary git branches
 def MAIN_BRANCH           = 'main'
 def UAT_BRANCH            = 'uat'
@@ -28,10 +32,10 @@ def SCHEDULE_JOBS_SCRIPT     = './scripts/schedule-jobs.apex'
 def POPULATE_CUSTOM_SETTINGS_SCRIPT = './scripts/populate-custom-settings.apex'
 
 // Methods for commands
-def installDependencies() {
-    echo 'Installing npm dependencies'
-    runCommand('npm install')
-}
+// def installDependencies() {
+//     echo 'Installing npm dependencies'
+//     runCommand('npm install')
+// }
 
 def loadSfdxEnvironments() {
     def jsonData = readFile(file: 'sfdx-environments.json')
@@ -172,7 +176,7 @@ pipeline {
     stages {
         stage('Load Dependencies') {
             steps {
-                installDependencies()
+                scripts.installDependencies()
                 script {
                     env.sfdxEnvironments = loadSfdxEnvironments()
                     env.sfdxPackageDirectories = loadSfdxPackageDirectories()
