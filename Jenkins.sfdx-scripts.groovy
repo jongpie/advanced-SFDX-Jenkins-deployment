@@ -64,7 +64,7 @@ def runLwcTests() {
 }
 
 def authorizeEnvironment(salesforceEnvironmentName) {
-     def sfdxEnvironment = loadSfdxEnvironment(salesforceEnvironmentName)
+    // def sfdxEnvironment = loadSfdxEnvironment(salesforceEnvironmentName)
     // println(sfdxEnvironment)
     def salesforceCredentialsId = 'Salesforce-Production'
 
