@@ -1,8 +1,9 @@
 [
     {
         "name": "Production",
+        "isDevHub": true,
         "deployOnlyDiff": true,
-        "jenkinsCredentialsName": "Salesforce-production",
+        "jenkinsCredentialsName": "Salesforce-Production",
         "experienceSites": [],
         "csvData": [
             {
@@ -16,7 +17,7 @@
     {
         "name": "Staging",
         "deployOnlyDiff": false,
-        "jenkinsCredentialsName": "Salesforce-staging-sandbox",
+        "jenkinsCredentialsName": "Salesforce-Staging-sandbox",
         "experienceSites": [],
         "csvData": [
             {
@@ -30,7 +31,7 @@
     {
         "name": "UAT",
         "deployOnlyDiff": false,
-        "jenkinsCredentialsName": "Salesforce-uat-sandbox",
+        "jenkinsCredentialsName": "Salesforce-UAT-sandbox",
         "experienceSites": [],
         "csvData": [
             {
@@ -44,7 +45,7 @@
     {
         "name": "QA",
         "deployOnlyDiff": false,
-        "jenkinsCredentialsName": "Salesforce-uat-sandbox",
+        "jenkinsCredentialsName": "Salesforce-QA-sandbox",
         "experienceSites": [],
         "postDeploymentScripts": ["/scripts/schedule-jobs.apex"]
     }
