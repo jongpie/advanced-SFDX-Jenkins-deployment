@@ -16,7 +16,7 @@ def installDependencies() {
 }
 
 def loadSfdxEnvironments() {
-    def jsonData = readFile(file: 'sfdx-environments.json')
+    def jsonData = readFile(file: 'Jenkins.sfdx-environments.json')
     def sfdxEnvironments = new JsonSlurper().parseText(jsonData);
 
     def sfdxEnvironmentsByName = [:]
