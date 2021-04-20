@@ -176,8 +176,8 @@ pipeline {
     stages {
         stage('Load Dependencies') {
             steps {
-                PROJECT_SCRIPTS.installDependencies()
                 script {
+                    PROJECT_SCRIPTS.installDependencies()
                     env.sfdxEnvironments = loadSfdxEnvironments()
                     env.sfdxPackageDirectories = loadSfdxPackageDirectories()
                 }
