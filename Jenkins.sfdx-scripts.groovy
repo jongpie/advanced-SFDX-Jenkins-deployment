@@ -57,18 +57,18 @@ def runLwcTests() {
 }
 
 def authorizeEnvironment(salesforceEnvironment) {
-    salesforceEnvironment = 'Salesforce-Production'
+    def salesforceEnvironmentName = 'Salesforce-Production'
 
-    withCredentials([string(credentialsId: salesforceEnvironment, variable: 'sfdxAuthUrl')]) {
-        def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironment + ' --setalias ' + salesforceEnvironment
+    withCredentials([string(credentialsId: salesforceEnvironmentName, variable: 'sfdxAuthUrl')]) {
+        def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + salesforceEnvironmentName + ' --setalias ' + salesforceEnvironmentName
         def deleteCommand;
         if (Boolean.valueOf(env.UNIX)) {
-            deleteCommand = 'rm ' + salesforceEnvironment
+            deleteCommand = 'rm ' + salesforceEnvironmentName
         } else {
-            deleteCommand = 'del ' + salesforceEnvironment
+            deleteCommand = 'del ' + salesforceEnvironmentName
         }
 
-        writeFile(file: salesforceEnvironment, text: sfdxAuthUrl, encoding: "UTF-8")
+        writeFile(file: salesforceEnvironmentName, text: sfdxAuthUrl, encoding: "UTF-8")
         runCommand(authCommand)
         runCommand(deleteCommand)
     }
