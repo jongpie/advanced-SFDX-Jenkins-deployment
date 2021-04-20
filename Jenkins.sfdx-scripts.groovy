@@ -16,6 +16,7 @@ def installDependencies() {
 }
 
 def loadSfdxEnvironment(salesforceEnvironmentName) {
+    println('loadSfdxEnvironment(salesforceEnvironmentName)==' + salesforceEnvironmentName)
     def sfdxEnvironments = loadSfdxEnvironments()
     def environment = sfdxEnvironments[salesforceEnvironmentName]
     return environment
@@ -63,8 +64,8 @@ def runLwcTests() {
 }
 
 def authorizeEnvironment(salesforceEnvironmentName) {
-    def sfdxEnvironment = loadSfdxEnvironment(salesforceEnvironmentName)
-    println(sfdxEnvironment)
+     def sfdxEnvironment = loadSfdxEnvironment(salesforceEnvironmentName)
+    // println(sfdxEnvironment)
     def salesforceCredentialsId = 'Salesforce-Production'
 
     withCredentials([string(credentialsId: salesforceCredentialsId, variable: 'sfdxAuthUrl')]) {
