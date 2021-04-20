@@ -81,8 +81,8 @@ pipeline {
                     steps {
                         script {
                             authorizeEnvironment(STAGING_SANDBOX)
-                            deployToSalesforce(STAGING_SANDBOX, e
-                        }nv.BRANCH_NAME == RELEASE_PREFIX, false)
+                            deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, false)
+                        }
                     }
                 }
                 stage('3. UAT') {
