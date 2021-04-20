@@ -57,13 +57,13 @@ def runLwcTests() {
 }
 
 def authorizeEnvironment(salesforceEnvironmentName) {
-    println(salesforceEnvironmentName)
+    println('salesforceEnvironmentName==' + salesforceEnvironmentName)
     def salesforceEnvironmentsByName = loadSfdxEnvironments()
-    println(salesforceEnvironmentsByName)
+    println('salesforceEnvironmentsByName==' + salesforceEnvironmentsByName)
     def salesforceEnvironment = salesforceEnvironmentsByName[salesforceEnvironmentName]
-    println(salesforceEnvironment)
+    println('salesforceEnvironment==' + salesforceEnvironment)
     def jenkinsCredentialsName = salesforceEnvironment.jenkinsCredentialsName
-    println(jenkinsCredentialsName)
+    println('jenkinsCredentialsName==' + jenkinsCredentialsName)
 
     withCredentials([string(credentialsId: jenkinsCredentialsName, variable: 'sfdxAuthUrl')]) {
         def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + jenkinsCredentialsName + ' --setalias ' + jenkinsCredentialsName
