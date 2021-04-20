@@ -16,13 +16,8 @@ def installDependencies() {
 }
 
 def loadSfdxEnvironment(salesforceEnvironmentName) {
-    //TODO use a map, make this less dumb
-    def environment
-    for (sfdxEnvironment in loadSfdxEnvironments()) {
-        if (sfdxEnvironment.name == salesforceEnvironmentName) {
-            environment = sfdxEnvironment
-        }
-    }
+    def sfdxEnvironments = loadSfdxEnvironments()
+    def environment = sfdxEnvironments[salesforceEnvironmentName]
     return environment
 }
 
