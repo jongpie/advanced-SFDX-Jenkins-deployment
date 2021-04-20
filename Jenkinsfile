@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 
 
 // Import SFDX scripts
-def scripts = load('Jenkinsfile.scripts.groovy')
+def PROJECT_SCRIPTS = load('Jenkinsfile.scripts.groovy')
 
 // Primary git branches
 def MAIN_BRANCH           = 'main'
@@ -176,7 +176,7 @@ pipeline {
     stages {
         stage('Load Dependencies') {
             steps {
-                scripts.installDependencies()
+                PROJECT_SCRIPTS.installDependencies()
                 script {
                     env.sfdxEnvironments = loadSfdxEnvironments()
                     env.sfdxPackageDirectories = loadSfdxPackageDirectories()
