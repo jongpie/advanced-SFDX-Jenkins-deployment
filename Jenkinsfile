@@ -170,17 +170,13 @@ def loadCsvFile(salesforceEnvironment, sobjectType, externalId) {
 pipeline {
     agent any
     stages {
-        stage('Install NPM Dependencies') {
-            steps { installDependencies() }
-        }
-        stage('Load SFDX Config') {
+        stage('Load Dependencies') {
             steps {
+                installDependencies()
                 script {
                     env.sfdxEnvironments = loadSfdxEnvironments()
                     env.sfdxPackageDirectories = loadSfdxPackageDirectories()
                 }
-                echo "${env.sfdxEnvironments}"
-                echo "${env.sfdxPackageDirectories}"
             }
         }
         stage('Run Apex Scanner') {
