@@ -139,7 +139,7 @@ pipeline {
                     }
                 }
                 stage('2. Training') {
-                    when  { branch UAT_BRANCH }
+                    when  { branch MAIN_BRANCH }
                     steps {
                         script {
                             PROJECT_SCRIPTS.runApexScript(TRAINING_SANDBOX, POPULATE_CUSTOM_SETTINGS_SCRIPT)
