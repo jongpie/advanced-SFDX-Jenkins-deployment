@@ -6,18 +6,24 @@ However, the examples on Salesforce's developer site are simpler examples of eit
 
 This repository is an example of how you can deploy to multiple Salesforce enviornments using Jenkins and SFDX. The metadata included in the `force-app` folder is just for demonstration purposes.
 
+## What It Looks Like
+
+![Pipeline: Feature Branch Deployment](./content/pipeline-feature-branch-deployment.png)
+
+## What It Does
+
 The deployment process itself is controlled by `Jenkinsfile` (stored in the repo's root directory). It uses `SFDX` commands to handle several common deployment steps:
 
-| Deployment Step                           | Purpose                                                                                                                                                                                                                          |
-| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Continuous Integration using Scratch Orgs | For `feature/*` and `bugfix/*` branches, scratch orgs are automatically created & used to deploy all metadata, run Apex tests and store the results in Jenkins                                                                   |
-| Sandbox Deployments                       | 4 sandboxes are used - but this approach scales well and it can easily be changed to use more (or fewer) environments, depending on your project's needs. (I've used this approach for automatically deploying to 12+ sandboxes) |
-| Parallel Deployments                      | This repo runs parallel deployments to 2 sandboxes, `UAT` and `DataMig`, any time there is a change merged to the `uat` branch. Not all projects need to run parallel deployments, but it's useful on more complex projects      |
-| Diff-only Prod Deployments                | Diff-only deployments to production using the [SFDX-Git-Delta](https://github.com/scolladon/sfdx-git-delta) plugin, including automatically generating & deploying `destructiveChanges.xml`                                      |
-| Static Code Analysis                      | For `feature/*` and `bugfix/*` branches, static code analysis is automatically run on Apex code using Salesforce's [SFDX Scanner plugin](https://forcedotcom.github.io/sfdx-scanner)                                             |
-| Upsert Custom Settings                    | Runs a post-deployment script to upsert `MyCustomSetting__c` custom setting                                                                                                                                                      |
-| Upsert SObject data                       | Automatically upserts CSV data after the deployment                                                                                                                                                                              |
-| Schedule Apex Jobs                        | Run a post-deployment script to (re-)schedule the Apex job `MySchedulableJob`                                                                                                                                                    |
+| Deployment Step                           | Purpose                                                                                                                                                                                                                                 |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Continuous Integration using Scratch Orgs | For `feature/*` and `bugfix/*` branches, scratch orgs are automatically created & used to deploy all metadata, run Apex tests and store the results in Jenkins                                                                          |
+| Sandbox Deployments                       | 4 sandboxes are used - but this approach scales well and it can easily be changed to use more (or fewer) environments, depending on your project's needs. (I've used this approach for automatically deploying to 12+ sandboxes)        |
+| Parallel Deployments                      | This repo runs parallel deployments to 2 environments, `Production` and `Training`, any time there is a change merged to the `main` branch. Not all projects need to run parallel deployments, but it's useful on more complex projects |
+| Diff-only Prod Deployments                | Diff-only deployments to production using the [SFDX-Git-Delta](https://github.com/scolladon/sfdx-git-delta) plugin, including automatically generating & deploying `destructiveChanges.xml`                                             |
+| Static Code Analysis                      | For `feature/*` and `bugfix/*` branches, static code analysis is automatically run on Apex code using Salesforce's [SFDX Scanner plugin](https://forcedotcom.github.io/sfdx-scanner)                                                    |
+| Upsert Custom Settings                    | Runs a post-deployment script to upsert `MyCustomSetting__c` custom setting                                                                                                                                                             |
+| Upsert SObject data                       | Automatically upserts CSV data after the deployment                                                                                                                                                                                     |
+| Schedule Apex Jobs                        | Run a post-deployment script to (re-)schedule the Apex job `MySchedulableJob`                                                                                                                                                           |
 
 ## Important Files
 
@@ -64,9 +70,9 @@ This repo uses these Salesforce environments for example purposes. You can add a
 |Environment Name|Purpose|
 --- | ---
 |`Production`|Your live Salesforce environment
+|`Training`|A sandbox used for training purposes. Deployments to `Production` and `Training` run in parallel.
 |`Staging`|A sandbox that matches production, used for testing the deployment process for `release/*` and `hotfix/*` branches before deploying to production
 |`UAT`|A sandbox used for user-acceptance testing
-|`DataMig`|A sandbox used for data migration. Deployments to `UAT` and `DataMig` run in parallel.
 |`QA`|A sandbox used for internal testing
 |`Scratch Orgs`|When validating `feature` and `bugfix` branches (discussed below), a scratch org is created & used to validate that the metadata is deployable, and that all unit tests are passsing.
 
