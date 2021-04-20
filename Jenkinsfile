@@ -169,14 +169,6 @@ pipeline {
                         }
                     }
                 }
-                stage('Scratch Org') {
-                    when  { branch DEVELOP_BRANCH }
-                    steps {
-                        script {
-                            SFDX_SCRIPTS.runApexScript(SCRATCH_ORG, POPULATE_CUSTOM_SETTINGS_SCRIPT)
-                        }
-                    }
-                }
             }
         }
         stage('Upsert CSV Data') {
@@ -222,14 +214,6 @@ pipeline {
                         }
                     }
                 }
-                stage('Scratch Org') {
-                    when  { branch DEVELOP_BRANCH }
-                    steps {
-                        script {
-                            SFDX_SCRIPTS.upsertCsvFiles(SCRATCH_ORG)
-                        }
-                    }
-                }
             }
         }
         stage('Schedule Apex Jobs') {
@@ -272,14 +256,6 @@ pipeline {
                     steps {
                         script {
                             SFDX_SCRIPTS.runApexScript(QA_SANDBOX, SCHEDULE_JOBS_SCRIPT)
-                        }
-                    }
-                }
-                stage('Scratch Org') {
-                    when  { branch DEVELOP_BRANCH }
-                    steps {
-                        script {
-                            SFDX_SCRIPTS.runApexScript(SCRATCH_ORG, SCHEDULE_JOBS_SCRIPT)
                         }
                     }
                 }
