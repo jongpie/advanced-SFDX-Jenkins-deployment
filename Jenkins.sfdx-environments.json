@@ -1,27 +1,24 @@
 [
     {
-        "name": "Production",
+        "name": "Salesforce-Production",
         "isDevHub": true,
         "deployOnlyDiff": true,
-        "jenkinsCredentialsName": "Salesforce-Production",
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [],
         "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
     },
     {
-        "name": "Training",
+        "name": "Salesforce-Training-sandbox",
         "isDevHub": false,
         "deployOnlyDiff": false,
-        "jenkinsCredentialsName": "Salesforce-Training-sandbox",
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [],
         "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
     },
     {
-        "name": "Staging",
+        "name": "Salesforce-Staging-sandbox",
         "isDevHub": false,
         "deployOnlyDiff": false,
-        "jenkinsCredentialsName": "Salesforce-Staging-sandbox",
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [
             {
@@ -33,10 +30,9 @@
         "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
     },
     {
-        "name": "UAT",
+        "name": "Salesforce-UAT-sandbox",
         "isDevHub": false,
         "deployOnlyDiff": false,
-        "jenkinsCredentialsName": "Salesforce-UAT-sandbox",
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [
             {
@@ -48,10 +44,9 @@
         "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
     },
     {
-        "name": "QA",
+        "name": "Salesforce-QA-sandbox",
         "isDevHub": false,
         "deployOnlyDiff": false,
-        "jenkinsCredentialsName": "Salesforce-QA-sandbox",
         "experienceSitesToPublish": [],
         "postDeploymentScripts": ["./scripts/schedule-jobs.apex"]
     }
