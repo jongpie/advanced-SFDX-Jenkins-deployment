@@ -16,6 +16,7 @@
     },
     {
         "name": "Staging",
+        "isDevHub": false,
         "deployOnlyDiff": false,
         "jenkinsCredentialsName": "Salesforce-Staging-sandbox",
         "experienceSites": [],
@@ -30,6 +31,7 @@
     },
     {
         "name": "UAT",
+        "isDevHub": false,
         "deployOnlyDiff": false,
         "jenkinsCredentialsName": "Salesforce-UAT-sandbox",
         "experienceSites": [],
@@ -44,6 +46,7 @@
     },
     {
         "name": "QA",
+        "isDevHub": false,
         "deployOnlyDiff": false,
         "jenkinsCredentialsName": "Salesforce-QA-sandbox",
         "experienceSites": [],
