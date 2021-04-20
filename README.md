@@ -66,8 +66,8 @@ If you want to leverage this same approach for your project, then you'll want to
 This repo uses these Salesforce environments for example purposes. You can add and remove environments as needed - the process itself scales well.
 |Environment Name|Purpose|
 --- | ---
-|`Production`|qwerty
-|`Staging`|asdf
+|`Production`|Your live Salesforce environment
+|`Staging`|A sandbox that matches production, used for testing the deployment process for `release/*` and `hotfix/*` branches before deploying to production
 |`UAT`|A sandbox used for user-acceptance testing
 |`DataMig`|A sandbox used for data migration. Deployments to `UAT` and `DataMig` run in parallel.
 |`QA`|A sandbox used for internal testing
@@ -93,8 +93,6 @@ This repo also uses the following branch prefixes.
 -   `hotfix/*` - Hotfix branches are used when fixing critical production-level bugs.
 -   `feature/*` - These are used when developing new features & enhancements.
 -   `bugfix/*` - These are for non-critical bugs (i.e., the bug is not critical enough to warrant a production hotfix).
--   `devops/*` - These branches are used to run validation-only deployments in all environments (production and sandboxes). This is useful when you are making changes to Jenkinsfile and want to ensure that the deployment can run in all environments.
--   `revert/*` - Revert branches are used when a merged commit needs to be reverted.
 
 ## Configuring Salesforce Credentials for Jenkins
 
