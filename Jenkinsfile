@@ -119,7 +119,7 @@ pipeline {
                     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; } }
                     steps {
                         script {
-                            SFDX_SCRIPTS.createScratchOrg(SCRATCH_ORG_DEFINITION_FILE, env.BRANCH_NAME) {
+                            SFDX_SCRIPTS.createScratchOrg(SCRATCH_ORG_DEFINITION_FILE, env.BRANCH_NAME)
                             SFDX_SCRIPTS.pushToScratchOrg(env.BRANCH_NAME) {
                             SFDX_SCRIPTS.runScratchOrgApexTests(env.BRANCH_NAME)
                         }
