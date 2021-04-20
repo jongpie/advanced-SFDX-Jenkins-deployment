@@ -63,7 +63,7 @@ def authorizeEnvironment(salesforceEnvironmentName) {
     def salesforceEnvironment = salesforceEnvironmentsByName[salesforceEnvironmentName]
     // println('salesforceEnvironment==' + salesforceEnvironment)
     def jenkinsCredentialsName = salesforceEnvironment.jenkinsCredentialsName
-    println('jenkinsCredentialsName==' + jenkinsCredentialsName)
+    // println('jenkinsCredentialsName==' + jenkinsCredentialsName)
 
     withCredentials([string(credentialsId: jenkinsCredentialsName, variable: 'sfdxAuthUrl')]) {
         def authCommand = 'sfdx force:auth:sfdxurl:store --sfdxurlfile=' + jenkinsCredentialsName + ' --setalias ' + jenkinsCredentialsName
@@ -74,7 +74,7 @@ def authorizeEnvironment(salesforceEnvironmentName) {
             deleteCommand = 'del ' + jenkinsCredentialsName
         }
 
-        writeFile(file: salesforceEnvironmentName, text: sfdxAuthUrl, encoding: "UTF-8")
+        writeFile(file: jenkinsCredentialsName, text: sfdxAuthUrl, encoding: "UTF-8")
         runCommand(authCommand)
         runCommand(deleteCommand)
     }
