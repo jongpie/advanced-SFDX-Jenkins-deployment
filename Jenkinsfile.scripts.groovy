@@ -57,6 +57,7 @@ def runLwcTests() {
 }
 
 def authorizeEnvironment(salesforceEnvironmentName) {
+    println(salesforceEnvironmentName)
     def salesforceEnvironmentsByName = loadSfdxEnvironments()
     println(salesforceEnvironmentsByName)
     def salesforceEnvironment = salesforceEnvironmentsByName[salesforceEnvironmentName]
