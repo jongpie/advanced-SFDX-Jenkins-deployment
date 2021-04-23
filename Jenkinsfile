@@ -269,6 +269,9 @@ pipeline {
         always {
             junit allowEmptyResults: true, testResults: 'tests/**/*.xml'
             // recordIssues enabledForFailure: true, tool: pmdParser(pattern: 'scanner-results.xml')
+            // cleanWs()
+        }
+        success {
             cleanWs()
         }
     }

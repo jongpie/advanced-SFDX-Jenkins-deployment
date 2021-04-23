@@ -2,7 +2,7 @@
     {
         "name": "Salesforce-Production",
         "isDevHub": true,
-        "deployOnlyDiff": true,
+        "deployOnlyDiff": false,
         "experienceSitesToPublish": [],
         "csvDataToUpsert": []
     },
