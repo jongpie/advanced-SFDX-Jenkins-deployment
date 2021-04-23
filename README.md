@@ -32,7 +32,7 @@ The deployment process itself is controlled by `Jenkinsfile` (stored in the repo
 | Continuous Integration using Scratch Orgs | For `feature/*` and `bugfix/*` branches, scratch orgs are automatically created & used to deploy all metadata, run Apex tests and store the results in Jenkins                                                                          |
 | Sandbox Deployments                       | 4 sandboxes are used - but this approach scales well and it can easily be changed to use more (or fewer) environments, depending on your project's needs. (I've used this approach for automatically deploying to 12+ sandboxes)        |
 | Parallel Deployments                      | This repo runs parallel deployments to 2 environments, `Production` and `Training`, any time there is a change merged to the `main` branch. Not all projects need to run parallel deployments, but it's useful on more complex projects |
-| Diff-only Prod Deployments                | Diff-only deployments to production using the [SFDX-Git-Delta](https://github.com/scolladon/sfdx-git-delta) plugin, including automatically generating & deploying `destructiveChanges.xml`                                             |
+| Diff-only Prod Deployments                | Diff-only deployments to production using the [SFDX-Git-Delta](https://github.com/scolladon/sfdx-git-delta) plugin, including automatically generating & deploying `destructiveChangesPost.xml`                                         |
 | Static Code Analysis                      | For `feature/*` and `bugfix/*` branches, static code analysis is automatically run on Apex code using Salesforce's [SFDX Scanner plugin](https://forcedotcom.github.io/sfdx-scanner)                                                    |
 | Upsert Custom Settings                    | Runs a post-deployment script to upsert `MyCustomSetting__c` custom setting                                                                                                                                                             |
 | Upsert SObject data                       | Automatically upserts CSV data after the deployment                                                                                                                                                                                     |
@@ -43,20 +43,9 @@ The deployment process itself is controlled by `Jenkinsfile` (stored in the repo
 If you want to leverage this same approach for your project, then you'll want to use these files:
 
 -   [Jenkinsfile](Jenkinsfile) - this contains the Jenkins pipeline definition, which tells Jenkins how to run the deployment (using SFDX commands)
--   [Jenkinsfile.scripts.groovy](Jenkinsfile.scripts.groovy) - this custom file contains several scripts used by `Jenkinsfile` (primarily, SFDX commands)
--   [sfdx-environments.json](sfdx-environments.json) - a custom JSON file that contains details about your Salesforce environments. This is used by Jenkins when deploying.
--   [sfdx-project.json](sfdx-project.json) - any metadata with the `packageDirectories` paths is deployed by Jenkins. Multiple directories/paths (shown below) are also supported:
-    ```json
-    "packageDirectories": [
-        {
-            "path": "force-app",
-            "default": true
-        },
-        {
-            "path": "another-force-app-directory"
-        }
-    ]
-    ```
+-   [Jenkins.sfdx-scripts.groovy](Jenkins.sfdx-scripts.groovy) - this custom file contains several scripts used by `Jenkinsfile` (primarily, SFDX commands)
+-   [Jenkins.sfdx-environments.json](Jenkins.sfdx-environments.json) - a custom JSON file that contains details about your Salesforce environments. This is used by Jenkins when deploying.
+-   [sfdx-project.json](sfdx-project.json) - any metadata with the `packageDirectories` paths is deployed by Jenkins. Multiple directories/paths are supported.
 -   [package.json](package.json) - within this file (or your own version of the file), these package dependencies are needed
     ```json
     "scripts": {
@@ -68,6 +57,7 @@ If you want to leverage this same approach for your project, then you'll want to
         "sfdx-git-delta": "^4.3.1"
     }
     ```
+-   [scripts/deployment/ directory](./scripts/deployment/) - this directory contains Apex and Python scripts used for post-deployment steps
 
 ## Required Software/Tools
 
