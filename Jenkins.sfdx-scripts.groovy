@@ -137,7 +137,8 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
             runCommand('sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment)
         } else {
             echo 'Running full deployment'
-            runCommand('sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment)
+            def fullDeployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment
+            runCommand(fullDeployCommand)
         }
 
     } catch(Exception error) {
