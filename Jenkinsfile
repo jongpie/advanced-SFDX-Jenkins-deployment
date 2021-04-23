@@ -42,30 +42,30 @@ pipeline {
                 }
             }
         }
-        // stage('Run Apex Scanner') {
-        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-        //     steps {
-        //         script {
-        //             SFDX_SCRIPTS.runApexScanner()
-        //         }
-        //     }
-        // }
-        // stage('Run LWC Tests') {
-        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-        //     steps {
-        //         script {
-        //             SFDX_SCRIPTS.runLwcTests()
-        //         }
-        //     }
-        // }
-        // stage('Convert Source to MDAPI') {
-        //     when { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
-        //     steps {
-        //         script {
-        //             SFDX_SCRIPTS.convertSourceToMdapiFormat()
-        //         }
-        //     }
-        // }
+        stage('Run Apex Scanner') {
+            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+            steps {
+                script {
+                    SFDX_SCRIPTS.runApexScanner()
+                }
+            }
+        }
+        stage('Run LWC Tests') {
+            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+            steps {
+                script {
+                    SFDX_SCRIPTS.runLwcTests()
+                }
+            }
+        }
+        stage('Convert Source to MDAPI') {
+            when { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
+            steps {
+                script {
+                    SFDX_SCRIPTS.convertSourceToMdapiFormat()
+                }
+            }
+        }
         stage('Deploy to Salesforce') {
             parallel {
                 stage('1. Production') {
@@ -73,7 +73,7 @@ pipeline {
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(PRODUCTION)
-                            SFDX_SCRIPTS.deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH)
+                            SFDX_SCRIPTS.deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH, true)
                             // SFDX_SCRIPTS.deleteObsoleteFlowVersions(PRODUCTION)
                         }
                     }
@@ -83,7 +83,7 @@ pipeline {
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(TRAINING_SANDBOX)
-                            SFDX_SCRIPTS.deployToSalesforce(TRAINING_SANDBOX, env.BRANCH_NAME == MAIN_BRANCH)
+                            SFDX_SCRIPTS.deployToSalesforce(TRAINING_SANDBOX, env.BRANCH_NAME == MAIN_BRANCH, false)
                             // SFDX_SCRIPTS.deleteObsoleteFlowVersions(TRAINING_SANDBOX)
                         }
                     }
@@ -93,7 +93,7 @@ pipeline {
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(STAGING_SANDBOX)
-                            SFDX_SCRIPTS.deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX)
+                            SFDX_SCRIPTS.deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, false)
                             // SFDX_SCRIPTS.deleteObsoleteFlowVersions(STAGING_SANDBOX)
                         }
                     }
@@ -103,17 +103,17 @@ pipeline {
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(UAT_SANDBOX)
-                            SFDX_SCRIPTS.deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH)
+                            SFDX_SCRIPTS.deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
                             // SFDX_SCRIPTS.deleteObsoleteFlowVersions(UAT_SANDBOX)
                         }
                     }
                 }
                 stage('5. QA') {
-                    when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; branch DEVELOP_BRANCH } }
+                    when  { branch DEVELOP_BRANCH }
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
-                            SFDX_SCRIPTS.deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH)
+                            SFDX_SCRIPTS.deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, false)
                             // SFDX_SCRIPTS.deleteObsoleteFlowVersions(QA_SANDBOX)
                         }
                     }
@@ -269,11 +269,8 @@ pipeline {
     }
     post {
         always {
-            junit allowEmptyResults: true, testResults: 'tests/**/*.xml'
+            // junit allowEmptyResults: true, testResults: 'tests/**/*.xml'
             // recordIssues enabledForFailure: true, tool: pmdParser(pattern: 'scanner-results.xml')
-            // cleanWs()
-        }
-        success {
             cleanWs()
         }
     }

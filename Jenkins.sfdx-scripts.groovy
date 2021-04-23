@@ -120,40 +120,42 @@ def runScratchOrgApexTests(scratchOrgAlias) {
 }
 
 // Deploy commands
-def deployToSalesforce(salesforceEnvironment, commitChanges) {
+def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
     try {
         def checkOnlyParam = commitChanges ? '' : ' --checkonly --testlevel RunLocalTests'
         def deployMessage  = commitChanges ? '. Deployment changes will be saved.' : '. Running check-only validation - deployment changes will not be saved.'
-        def environmentDetails = loadSfdxEnvironment(salesforceEnvironment)
         echo 'Starting Salesforce deployment for environment: ' + salesforceEnvironment
         echo 'commitChanges is: ' + commitChanges + deployMessage
-        echo 'deployOnlyDiff is: ' + environmentDetails.deployOnlyDiff
+        echo 'deployOnlyDiff is: ' + deployOnlyDiff
         echo 'SFDX package directories: ' + env.sfdxPackageDirectories
 
-        if (environmentDetails.deployOnlyDiff == true) {
-            echo 'Running diff-only deployment'
+        // When using SFDX's default timeout + multiple environments + multiple branches,
+        // we've had issues with Jenkins jobs would continue running, waiting for a deployment result... that would never come :-(
+        // Adding the --wait parameter with a longer time helps reduce/prevent this
+
+        def deployCommand;
+        if (deployOnlyDiff) {
             runCommand('sfdx sgd:source:delta --to HEAD --from HEAD^ --output ./mdapi/ --generate-delta')
             runCommand('mv ./mdapi/destructiveChanges/destructiveChanges.xml ./mdapi/package/destructiveChangesPost.xml')
-            runCommand('sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment)
+            deployCommand = 'sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment
         } else {
-            echo 'Running full deployment'
-            def fullDeployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment
-            runCommand(fullDeployCommand)
+            deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment
         }
 
+        runCommand(deployCommand)
     } catch(Exception error) {
         if(commitChanges) {
             // If we're supposed to be committing changes and there's an error, throw the error
             throw error
         } else {
             // If we're running a check-only validation & it fails, mark the step as unstable
-            unstable('Check-only deploy failure for Salesforce: ' + error)
+            unstable('Check-only deploy failure for Salesforce')
         }
     }
 }
 
 def deleteObsoleteFlowVersions(salesforceEnvironment) {
-    runCommand('python ./scripts/deployment/delete-old-flow-versions.py --targetusername ' + salesforceEnvironment)
+    runCommand('python ./scripts/deployment/delete-old-flow-versions --targetusername ' + salesforceEnvironment)
 }
 
 def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName) {
@@ -170,11 +172,9 @@ def runApexScript(salesforceEnvironment, apexCodeFile) {
 }
 
 def upsertCsvFiles(salesforceEnvironment) {//}, sobjectType, externalId) {
-    def environmentDetails = loadSfdxEnvironment(salesforceEnvironment)
-    for(csvFile in environmentDetails.csvDataToUpsert) {
-        echo 'Upserting ' + csvFile.filename + ' for SObject Type ' + csvFile.sobjectType + ' using external ID field ' + csvFile.externalIdField
-        runCommand('sfdx force:data:bulk:upsert --sobjecttype ' + csvFile.sobjectType + ' --externalid ' + csvFile.externalIdField + ' --csvfile ' + csvFile.filename + ' --targetusername ' + salesforceEnvironment)
-    }
+    //def csvFile = './config/data/' + sobjectType + '.csv'
+    echo 'TODO Upserting data'
+    //runCommand('sfdx force:data:bulk:upsert --sobjecttype ' + sobjectType + ' --externalid ' + externalId + ' --csvfile ' + csvFile + ' --targetusername ' + salesforceEnvironment)
 }
 
 return this
