@@ -176,6 +176,7 @@ def upsertCsvFiles(salesforceEnvironment) {//}, sobjectType, externalId) {
     for(csvFile in environmentDetails.csvDataToUpsert) {
         echo 'Upserting ' + csvFile.filename + ' for SObject Type ' + csvFile.sobjectType + ' using external ID field ' + csvFile.externalIdField
         def upsertCommand = 'sfdx force:data:bulk:upsert --sobjecttype ' + csvFile.sobjectType + ' --externalid ' + csvFile.externalIdField + ' --csvfile ' + csvFile.filename + ' --targetusername ' + salesforceEnvironment
+        echo 'upsertCommand==' + upsertCommand
         runCommand(upsertCommand)
     }
 }
