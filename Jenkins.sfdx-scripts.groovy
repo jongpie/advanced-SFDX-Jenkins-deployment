@@ -50,7 +50,7 @@ def loadSfdxPackageDirectories() {
 }
 
 def convertSourceToMdapiFormat() {
-    def convertCommand = 'sfdx force:source:convert --rootdir ' + env.sfdxPackageDirectories + ' --outputdir ./mdapi/'
+    def convertCommand = 'sfdx force:source:convert --rootdir ' + loadSfdxPackageDirectories() + ' --outputdir ./mdapi/'
     runCommand(convertCommand)
 }
 
@@ -125,10 +125,11 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
         def checkOnlyParam = commitChanges ? '' : ' --checkonly --testlevel RunLocalTests'
         def deployMessage  = commitChanges ? '. Deployment changes will be saved.' : '. Running check-only validation - deployment changes will not be saved.'
         def environmentDetails = loadSfdxEnvironment(salesforceEnvironment)
+        def packageDirectories = loadSfdxPackageDirectories()
         echo 'Starting Salesforce deployment for environment: ' + salesforceEnvironment
         echo 'commitChanges is: ' + commitChanges + deployMessage
         echo 'deployOnlyDiff is: ' + environmentDetails.deployOnlyDiff
-        echo 'SFDX package directories: ' + env.sfdxPackageDirectories
+        echo 'SFDX package directories: ' + packageDirectories
 
         // When using SFDX's default timeout + multiple environments + multiple branches,
         // we've had issues with Jenkins jobs would continue running, waiting for a deployment result... that would never come :-(
@@ -142,7 +143,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
             deployCommand = 'sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment
         } else {
             echo 'Running full deployment'
-            deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + loadSfdxPackageDirectories() + ' --targetusername ' + salesforceEnvironment
+            deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + packageDirectories + ' --targetusername ' + salesforceEnvironment
         }
 
         runCommand(deployCommand)
