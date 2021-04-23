@@ -69,18 +69,6 @@ If you want to leverage this same approach for your project, then you'll want to
 -   [SFDX (Salesforce CLI)](https://developer.salesforce.com/tools/sfdxcli) installed on the Jenkins server/build agents
 -   [PMD](https://github.com/pmd/pmd/releases) installed on the Jenkins server/build agents
 
-## Salesforce Environments
-
-This repo uses these Salesforce environments for example purposes. You can add and remove environments as needed - the process itself scales well.
-|Environment Name|Purpose|
---- | ---
-|`Production`|Your live Salesforce environment
-|`Training`|A sandbox used for training purposes. Deployments to `Production` and `Training` run in parallel.
-|`Staging`|A sandbox that matches production, used for testing the deployment process for `release/*` and `hotfix/*` branches before deploying to production
-|`UAT`|A sandbox used for user-acceptance testing
-|`QA`|A sandbox used for internal testing
-|`Scratch Orgs`|When validating `feature` and `bugfix` branches (discussed below), a scratch org is created & used to validate that the metadata is deployable, and that all unit tests are passsing.
-
 ## Git Branches
 
 This repo uses [git-flow](https://nvie.com/posts/a-successful-git-branching-model/) as the branching model/branch naming convention.
@@ -101,6 +89,18 @@ This repo also uses the following branch prefixes.
 -   `hotfix/*` - Hotfix branches are used when fixing critical production-level bugs.
 -   `feature/*` - These are used when developing new features & enhancements.
 -   `bugfix/*` - These are for non-critical bugs (i.e., the bug is not critical enough to warrant a production hotfix).
+
+## Salesforce Environments
+
+This repo uses these Salesforce environments for example purposes. You can add and remove environments as needed - the process itself scales well.
+|Environment Name|Purpose|
+--- | ---
+|`Production`|Your live Salesforce environment
+|`Training`|A sandbox used for training purposes. Deployments to `Production` and `Training` run in parallel.
+|`Staging`|A sandbox that matches production, used for testing the deployment process for `release/*` and `hotfix/*` branches before deploying to production
+|`UAT`|A sandbox used for user-acceptance testing
+|`QA`|A sandbox used for internal testing
+|`Scratch Orgs`|When validating `feature` and `bugfix` branches (discussed below), a scratch org is created & used to validate that the metadata is deployable, and that all unit tests are passsing.
 
 ## Configuring Salesforce Credentials for Jenkins
 
