@@ -50,7 +50,7 @@ def loadSfdxPackageDirectories() {
 }
 
 def convertSourceToMdapiFormat() {
-    def convertCommand = 'sfdx force:source:convert --rootdir ' + loadSfdxPackageDirectories() + ' --outputdir ./mdapi/'
+    def convertCommand = 'sfdx force:source:convert --rootdir ' + env.sfdxPackageDirectories + ' --outputdir ./mdapi/'
     runCommand(convertCommand)
 }
 
@@ -125,11 +125,10 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
         def checkOnlyParam = commitChanges ? '' : ' --checkonly --testlevel RunLocalTests'
         def deployMessage  = commitChanges ? '. Deployment changes will be saved.' : '. Running check-only validation - deployment changes will not be saved.'
         def environmentDetails = loadSfdxEnvironment(salesforceEnvironment)
-        def packageDirectories = loadSfdxPackageDirectories()
         echo 'Starting Salesforce deployment for environment: ' + salesforceEnvironment
         echo 'commitChanges is: ' + commitChanges + deployMessage
         echo 'deployOnlyDiff is: ' + environmentDetails.deployOnlyDiff
-        echo 'SFDX package directories: ' + packageDirectories
+        echo 'SFDX package directories: ' + env.sfdxPackageDirectories
 
         if (environmentDetails.deployOnlyDiff == true) {
             echo 'Running diff-only deployment'
@@ -138,7 +137,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
             runCommand('sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment)
         } else {
             echo 'Running full deployment'
-            runCommand('sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + packageDirectories + ' --targetusername ' + salesforceEnvironment)
+            runCommand('sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment)
         }
 
     } catch(Exception error) {

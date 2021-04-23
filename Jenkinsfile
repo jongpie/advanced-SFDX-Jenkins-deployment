@@ -37,6 +37,8 @@ pipeline {
                 script {
                     SFDX_SCRIPTS = load 'Jenkins.sfdx-scripts.groovy'
                     SFDX_SCRIPTS.installDependencies()
+                    env.sfdxEnvironments = SFDX_SCRIPTS.loadSfdxEnvironments()
+                    env.sfdxPackageDirectories = SFDX_SCRIPTS.loadSfdxPackageDirectories()
                 }
             }
         }
