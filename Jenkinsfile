@@ -109,7 +109,7 @@ pipeline {
                     }
                 }
                 stage('5. QA') {
-                    when  { branch DEVELOP_BRANCH }
+                    when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
