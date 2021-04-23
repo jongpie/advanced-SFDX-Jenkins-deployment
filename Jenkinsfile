@@ -48,22 +48,22 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Run LWC Tests') {
-            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-            steps {
-                script {
-                    SFDX_SCRIPTS.runLwcTests()
-                }
-            }
-        }
-        stage('Convert Source to MDAPI') {
-            when { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
-            steps {
-                script {
-                    SFDX_SCRIPTS.convertSourceToMdapiFormat()
-                }
-            }
-        }
+        // stage('Run LWC Tests') {
+        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+        //     steps {
+        //         script {
+        //             SFDX_SCRIPTS.runLwcTests()
+        //         }
+        //     }
+        // }
+        // stage('Convert Source to MDAPI') {
+        //     when { anyOf { branch DEVELOP_BRANCH; branch UAT_BRANCH; branch MAIN_BRANCH } }
+        //     steps {
+        //         script {
+        //             SFDX_SCRIPTS.convertSourceToMdapiFormat()
+        //         }
+        //     }
+        // }
         stage('Deploy to Salesforce') {
             parallel {
                 stage('1. Production') {

@@ -131,22 +131,16 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
         echo 'deployOnlyDiff is: ' + environmentDetails.deployOnlyDiff
         echo 'SFDX package directories: ' + packageDirectories
 
-        // When using SFDX's default timeout + multiple environments + multiple branches,
-        // we've had issues with Jenkins jobs would continue running, waiting for a deployment result... that would never come :-(
-        // Adding the --wait parameter with a longer time helps reduce/prevent this
-
-        def deployCommand;
         if (environmentDetails.deployOnlyDiff == true) {
             echo 'Running diff-only deployment'
             runCommand('sfdx sgd:source:delta --to HEAD --from HEAD^ --output ./mdapi/ --generate-delta')
             runCommand('mv ./mdapi/destructiveChanges/destructiveChanges.xml ./mdapi/package/destructiveChangesPost.xml')
-            deployCommand = 'sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment
+            runCommand('sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment)
         } else {
             echo 'Running full deployment'
-            deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + packageDirectories + ' --targetusername ' + salesforceEnvironment
+            runCommand('sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + packageDirectories + ' --targetusername ' + salesforceEnvironment)
         }
 
-        runCommand(deployCommand)
     } catch(Exception error) {
         if(commitChanges) {
             // If we're supposed to be committing changes and there's an error, throw the error
