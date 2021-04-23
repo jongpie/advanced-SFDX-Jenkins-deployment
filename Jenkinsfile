@@ -176,51 +176,51 @@ pipeline {
                 }
             }
         }
-        stage('Upsert CSV Data') {
-            when     { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH } }
-            parallel {
-                stage('1. Production') {
-                    when  { branch MAIN_BRANCH }
-                    steps {
-                        script {
-                            SFDX_SCRIPTS.upsertCsvFiles(PRODUCTION)
-                        }
-                    }
-                }
-                stage('2. Training') {
-                    when  { branch MAIN_BRANCH }
-                    steps {
-                        script {
-                            SFDX_SCRIPTS.upsertCsvFiles(TRAINING_SANDBOX)
-                        }
-                    }
-                }
-                stage('3. Staging') {
-                    when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
-                    steps {
-                        script {
-                            SFDX_SCRIPTS.upsertCsvFiles(STAGING_SANDBOX)
-                        }
-                    }
-                }
-                stage('4. UAT') {
-                    when  { branch UAT_BRANCH }
-                    steps {
-                        script {
-                            SFDX_SCRIPTS.upsertCsvFiles(UAT_SANDBOX)
-                        }
-                    }
-                }
-                stage('5. QA') {
-                    when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; branch DEVELOP_BRANCH } }
-                    steps {
-                        script {
-                            SFDX_SCRIPTS.upsertCsvFiles(QA_SANDBOX)
-                        }
-                    }
-                }
-            }
-        }
+        // stage('Upsert CSV Data') {
+        //     when     { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH } }
+        //     parallel {
+        //         stage('1. Production') {
+        //             when  { branch MAIN_BRANCH }
+        //             steps {
+        //                 script {
+        //                     SFDX_SCRIPTS.upsertCsvFiles(PRODUCTION)
+        //                 }
+        //             }
+        //         }
+        //         stage('2. Training') {
+        //             when  { branch MAIN_BRANCH }
+        //             steps {
+        //                 script {
+        //                     SFDX_SCRIPTS.upsertCsvFiles(TRAINING_SANDBOX)
+        //                 }
+        //             }
+        //         }
+        //         stage('3. Staging') {
+        //             when  { anyOf { branch HOTFIX_PREFIX; branch RELEASE_PREFIX } }
+        //             steps {
+        //                 script {
+        //                     SFDX_SCRIPTS.upsertCsvFiles(STAGING_SANDBOX)
+        //                 }
+        //             }
+        //         }
+        //         stage('4. UAT') {
+        //             when  { branch UAT_BRANCH }
+        //             steps {
+        //                 script {
+        //                     SFDX_SCRIPTS.upsertCsvFiles(UAT_SANDBOX)
+        //                 }
+        //             }
+        //         }
+        //         stage('5. QA') {
+        //             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; branch DEVELOP_BRANCH } }
+        //             steps {
+        //                 script {
+        //                     SFDX_SCRIPTS.upsertCsvFiles(QA_SANDBOX)
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
         stage('Schedule Apex Jobs') {
             when     { anyOf { branch FEATURE_PREFIX; branch DEVELOP_BRANCH; branch UAT_BRANCH } }
             parallel {
