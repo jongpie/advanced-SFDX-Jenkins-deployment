@@ -4,7 +4,13 @@
         "isDevHub": true,
         "deployOnlyDiff": false,
         "experienceSitesToPublish": [],
-        "csvDataToUpsert": []
+        "csvDataToUpsert": [
+            {
+                "filename": "./data/MyCustomObject__c.csv",
+                "sobjectType": "MyCustomObject__c",
+                "externalIdField": "MyExternalId__c"
+            }
+        ]
     },
     {
         "name": "Salesforce-Training-sandbox",
