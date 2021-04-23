@@ -172,9 +172,11 @@ def runApexScript(salesforceEnvironment, apexCodeFile) {
 }
 
 def upsertCsvFiles(salesforceEnvironment) {//}, sobjectType, externalId) {
-    //def csvFile = './config/data/' + sobjectType + '.csv'
-    echo 'TODO Upserting data'
-    //runCommand('sfdx force:data:bulk:upsert --sobjecttype ' + sobjectType + ' --externalid ' + externalId + ' --csvfile ' + csvFile + ' --targetusername ' + salesforceEnvironment)
+    def environmentDetails = loadSfdxEnvironment(salesforceEnvironment)
+    for(csvFile in environmentDetails.csvDataToUpsert) {
+        echo 'Upserting ' + csvFile.filename + ' for SObject Type ' + csvFile.sobjectType + ' using external ID field ' + csvFile.externalIdField
+        runCommand('sfdx force:data:bulk:upsert --sobjecttype ' + csvFile.sobjectType + ' --externalid ' + csvFile.externalIdField + ' --csvfile ' + csvFile.filename + ' --targetusername ' + salesforceEnvironment)
+    }
 }
 
 return this
