@@ -32,14 +32,14 @@ def POPULATE_CUSTOM_SETTINGS_SCRIPT = './scripts/populate-custom-settings.apex'
 pipeline {
     agent any
     stages {
-        // stage('Load Dependencies') {
-        //     steps {
-        //         script {
-        //             SFDX_SCRIPTS = load 'Jenkins.sfdx-scripts.groovy'
-        //             SFDX_SCRIPTS.installDependencies()
-        //         }
-        //     }
-        // }
+        stage('Load Dependencies') {
+            steps {
+                script {
+                    SFDX_SCRIPTS = load 'Jenkins.sfdx-scripts.groovy'
+                    SFDX_SCRIPTS.installDependencies()
+                }
+            }
+        }
         stage('Run Apex Scanner') {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
             steps {
