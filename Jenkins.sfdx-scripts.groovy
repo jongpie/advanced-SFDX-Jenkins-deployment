@@ -156,7 +156,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
 }
 
 def deleteObsoleteFlowVersions(salesforceEnvironment) {
-    runCommand('python ./scripts/deployment/delete-old-flow-versions --targetusername ' + salesforceEnvironment)
+    runCommand('python ./scripts/deployment/delete-old-flow-versions.py --targetusername ' + salesforceEnvironment)
 }
 
 def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName) {
