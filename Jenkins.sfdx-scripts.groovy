@@ -125,9 +125,10 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
         def checkOnlyParam = commitChanges ? '' : ' --checkonly --testlevel RunLocalTests'
         def deployMessage  = commitChanges ? '. Deployment changes will be saved.' : '. Running check-only validation - deployment changes will not be saved.'
         def environmentDetails = loadSfdxEnvironment(salesforceEnvironment)
+        def deployOnlyDiff = environmentDetails.deployOnlyDiff
         echo 'Starting Salesforce deployment for environment: ' + salesforceEnvironment
         echo 'commitChanges is: ' + commitChanges + deployMessage
-        echo 'deployOnlyDiff is: ' + environmentDetails.deployOnlyDiff
+        echo 'deployOnlyDiff is: ' + deployOnlyDiff
         echo 'SFDX package directories: ' + env.sfdxPackageDirectories
 
         // When using SFDX's default timeout + multiple environments + multiple branches,
@@ -135,7 +136,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
         // Adding the --wait parameter with a longer time helps reduce/prevent this
 
         def deployCommand;
-        if (environmentDetails.deployOnlyDiff == true) {
+        if (deployOnlyDiff == true) {
             echo 'Running diff-only deployment'
             runCommand('sfdx sgd:source:delta --to HEAD --from HEAD^ --output ./mdapi/ --generate-delta')
             runCommand('mv ./mdapi/destructiveChanges/destructiveChanges.xml ./mdapi/package/destructiveChangesPost.xml')
