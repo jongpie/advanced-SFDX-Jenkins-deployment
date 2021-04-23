@@ -135,7 +135,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
         // Adding the --wait parameter with a longer time helps reduce/prevent this
 
         def deployCommand;
-        if (environmentDetails.deployOnlyDiff) {
+        if (environmentDetails.deployOnlyDiff == true) {
             runCommand('sfdx sgd:source:delta --to HEAD --from HEAD^ --output ./mdapi/ --generate-delta')
             runCommand('mv ./mdapi/destructiveChanges/destructiveChanges.xml ./mdapi/package/destructiveChangesPost.xml')
             deployCommand = 'sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment
