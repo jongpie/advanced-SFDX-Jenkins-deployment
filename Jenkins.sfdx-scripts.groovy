@@ -136,10 +136,12 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
 
         def deployCommand;
         if (environmentDetails.deployOnlyDiff == true) {
+            echo 'Running diff-only deployment'
             runCommand('sfdx sgd:source:delta --to HEAD --from HEAD^ --output ./mdapi/ --generate-delta')
             runCommand('mv ./mdapi/destructiveChanges/destructiveChanges.xml ./mdapi/package/destructiveChangesPost.xml')
             deployCommand = 'sfdx force:mdapi:deploy --verbose ' + checkOnlyParam + ' --wait 1440 --manifest ./mdapi/package/package.xml --targetusername ' + salesforceEnvironment
         } else {
+            echo 'Running full deployment'
             deployCommand = 'sfdx force:source:deploy --verbose' + checkOnlyParam + ' --wait 1440 --sourcepath ' + env.sfdxPackageDirectories + ' --targetusername ' + salesforceEnvironment
         }
 
@@ -150,7 +152,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
             throw error
         } else {
             // If we're running a check-only validation & it fails, mark the step as unstable
-            unstable('Check-only deploy failure for Salesforce')
+            unstable('Check-only deploy failure for Salesforce: ' + error)
         }
     }
 }
