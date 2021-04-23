@@ -43,6 +43,13 @@
         "name": "Salesforce-QA-sandbox",
         "isDevHub": false,
         "deployOnlyDiff": false,
-        "experienceSitesToPublish": []
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": [
+            {
+                "filename": "./data/MyCustomObject__c.csv",
+                "sobjectType": "MyCustomObject__c",
+                "externalIdField": "MyExternalId__c"
+            }
+        ]
     }
 ]
