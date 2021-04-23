@@ -42,14 +42,14 @@ pipeline {
                 }
             }
         }
-        stage('Run Apex Scanner') {
-            when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
-            steps {
-                script {
-                    SFDX_SCRIPTS.runApexScanner()
-                }
-            }
-        }
+        // stage('Run Apex Scanner') {
+        //     when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
+        //     steps {
+        //         script {
+        //             SFDX_SCRIPTS.runApexScanner()
+        //         }
+        //     }
+        // }
         stage('Run LWC Tests') {
             when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX } }
             steps {
