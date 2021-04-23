@@ -120,7 +120,7 @@ def runScratchOrgApexTests(scratchOrgAlias) {
 }
 
 // Deploy commands
-def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
+def deployToSalesforce(salesforceEnvironment, commitChanges) {
     try {
         def checkOnlyParam = commitChanges ? '' : ' --checkonly --testlevel RunLocalTests'
         def deployMessage  = commitChanges ? '. Deployment changes will be saved.' : '. Running check-only validation - deployment changes will not be saved.'
