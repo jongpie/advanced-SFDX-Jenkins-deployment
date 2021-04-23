@@ -63,8 +63,8 @@ If you want to leverage this same approach for your project, then you'll want to
 
 -   [Jenkins server](https://jenkins.io) with these plugins
     -   [Blue Ocean](https://plugins.jenkins.io/blueocean)
-    -   [Warnings Next Generation](https://plugins.jenkins.io/warnings-ng/)
     -   [Pipeline Utility Steps](https://plugins.jenkins.io/pipeline-utility-steps/)
+    -   [Warnings Next Generation](https://plugins.jenkins.io/warnings-ng/)
     -   [Workspace Cleanup](https://plugins.jenkins.io/ws-cleanup/)
 -   [SFDX (Salesforce CLI)](https://developer.salesforce.com/tools/sfdxcli) installed on the Jenkins server/build agents
 -   [PMD](https://github.com/pmd/pmd/releases) installed on the Jenkins server/build agents
