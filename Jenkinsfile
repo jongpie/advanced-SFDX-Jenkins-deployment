@@ -72,7 +72,7 @@ pipeline {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(PRODUCTION)
                             SFDX_SCRIPTS.deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH)
-                            // SFDX_SCRIPTS.deleteObsoleteFlowVersions(PRODUCTION)
+                            SFDX_SCRIPTS.deleteObsoleteFlowVersions(PRODUCTION)
                         }
                     }
                 }
@@ -82,7 +82,7 @@ pipeline {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(TRAINING_SANDBOX)
                             SFDX_SCRIPTS.deployToSalesforce(TRAINING_SANDBOX, env.BRANCH_NAME == MAIN_BRANCH)
-                            // SFDX_SCRIPTS.deleteObsoleteFlowVersions(TRAINING_SANDBOX)
+                            SFDX_SCRIPTS.deleteObsoleteFlowVersions(TRAINING_SANDBOX)
                         }
                     }
                 }
@@ -92,7 +92,7 @@ pipeline {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(STAGING_SANDBOX)
                             SFDX_SCRIPTS.deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX)
-                            // SFDX_SCRIPTS.deleteObsoleteFlowVersions(STAGING_SANDBOX)
+                            SFDX_SCRIPTS.deleteObsoleteFlowVersions(STAGING_SANDBOX)
                         }
                     }
                 }
@@ -102,7 +102,7 @@ pipeline {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(UAT_SANDBOX)
                             SFDX_SCRIPTS.deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH)
-                            // SFDX_SCRIPTS.deleteObsoleteFlowVersions(UAT_SANDBOX)
+                            SFDX_SCRIPTS.deleteObsoleteFlowVersions(UAT_SANDBOX)
                         }
                     }
                 }
@@ -112,7 +112,7 @@ pipeline {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
                             SFDX_SCRIPTS.deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH)
-                            // SFDX_SCRIPTS.deleteObsoleteFlowVersions(QA_SANDBOX)
+                            SFDX_SCRIPTS.deleteObsoleteFlowVersions(QA_SANDBOX)
                         }
                     }
                 }

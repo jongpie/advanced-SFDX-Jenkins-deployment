@@ -127,7 +127,7 @@ def deployToSalesforce(salesforceEnvironment, commitChanges) {
         def environmentDetails = loadSfdxEnvironment(salesforceEnvironment)
         echo 'Starting Salesforce deployment for environment: ' + salesforceEnvironment
         echo 'commitChanges is: ' + commitChanges + deployMessage
-        echo 'deployOnlyDiff is: ' + deployOnlyDiff
+        echo 'deployOnlyDiff is: ' + environmentDetails.deployOnlyDiff
         echo 'SFDX package directories: ' + env.sfdxPackageDirectories
 
         // When using SFDX's default timeout + multiple environments + multiple branches,
