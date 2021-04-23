@@ -93,7 +93,7 @@ This repo uses these Salesforce environments for example purposes. You can add a
 
 ## Git Branches
 
-Uses git flow naming conventions for git branches
+This repo uses [git-flow](https://nvie.com/posts/a-successful-git-branching-model/) as the branching model/branch naming convention.
 
 ### Git Named Branches
 

@@ -1,7 +1,7 @@
 import subprocess, json, os, platform, sys, getopt
 import xml.dom.minidom
 
-API_VERSION = '49.0'
+API_VERSION = '51.0'
 
 NAMESPACE = {
     'salesforce' : 'http://soap.sforce.com/2006/04/metadata',
