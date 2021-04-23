@@ -37,8 +37,6 @@ pipeline {
                 script {
                     SFDX_SCRIPTS = load 'Jenkins.sfdx-scripts.groovy'
                     SFDX_SCRIPTS.installDependencies()
-                    env.sfdxEnvironments = SFDX_SCRIPTS.loadSfdxEnvironments()
-                    env.sfdxPackageDirectories = SFDX_SCRIPTS.loadSfdxPackageDirectories()
                 }
             }
         }
@@ -73,7 +71,7 @@ pipeline {
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(PRODUCTION)
-                            SFDX_SCRIPTS.deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH, true)
+                            SFDX_SCRIPTS.deployToSalesforce(PRODUCTION, env.BRANCH_NAME == MAIN_BRANCH)
                             SFDX_SCRIPTS.deleteObsoleteFlowVersions(PRODUCTION)
                         }
                     }
@@ -83,7 +81,7 @@ pipeline {
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(TRAINING_SANDBOX)
-                            SFDX_SCRIPTS.deployToSalesforce(TRAINING_SANDBOX, env.BRANCH_NAME == MAIN_BRANCH, false)
+                            SFDX_SCRIPTS.deployToSalesforce(TRAINING_SANDBOX, env.BRANCH_NAME == MAIN_BRANCH)
                             SFDX_SCRIPTS.deleteObsoleteFlowVersions(TRAINING_SANDBOX)
                         }
                     }
@@ -93,7 +91,7 @@ pipeline {
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(STAGING_SANDBOX)
-                            SFDX_SCRIPTS.deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX, false)
+                            SFDX_SCRIPTS.deployToSalesforce(STAGING_SANDBOX, env.BRANCH_NAME == RELEASE_PREFIX)
                             SFDX_SCRIPTS.deleteObsoleteFlowVersions(STAGING_SANDBOX)
                         }
                     }
@@ -103,17 +101,17 @@ pipeline {
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(UAT_SANDBOX)
-                            SFDX_SCRIPTS.deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH, false)
+                            SFDX_SCRIPTS.deployToSalesforce(UAT_SANDBOX, env.BRANCH_NAME == UAT_BRANCH)
                             SFDX_SCRIPTS.deleteObsoleteFlowVersions(UAT_SANDBOX)
                         }
                     }
                 }
                 stage('5. QA') {
-                    when  { branch DEVELOP_BRANCH }
+                    when  { anyOf { branch FEATURE_PREFIX; branch BUGFIX_PREFIX; branch DEVELOP_BRANCH } }
                     steps {
                         script {
                             SFDX_SCRIPTS.authorizeEnvironment(QA_SANDBOX)
-                            SFDX_SCRIPTS.deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH, false)
+                            SFDX_SCRIPTS.deployToSalesforce(QA_SANDBOX, env.BRANCH_NAME == DEVELOP_BRANCH)
                             SFDX_SCRIPTS.deleteObsoleteFlowVersions(QA_SANDBOX)
                         }
                     }
