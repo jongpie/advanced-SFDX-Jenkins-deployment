@@ -4,16 +4,14 @@
         "isDevHub": true,
         "deployOnlyDiff": true,
         "experienceSitesToPublish": [],
-        "csvDataToUpsert": [],
-        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex", "./scripts/deployment/populate-custom-settings.apex"]
+        "csvDataToUpsert": []
     },
     {
         "name": "Salesforce-Training-sandbox",
         "isDevHub": false,
         "deployOnlyDiff": false,
         "experienceSitesToPublish": [],
-        "csvDataToUpsert": [],
-        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex", "./scripts/deployment/populate-custom-settings.apex"]
+        "csvDataToUpsert": []
     },
     {
         "name": "Salesforce-Staging-sandbox",
@@ -22,12 +20,11 @@
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [
             {
-                "csvFile": "./data/Accounts.csv",
+                "filename": "./data/Accounts.csv",
                 "sobjectType": "Account",
                 "externalIdField": "MyExternalId__c"
             }
-        ],
-        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex", "./scripts/deployment/populate-custom-settings.apex"]
+        ]
     },
     {
         "name": "Salesforce-UAT-sandbox",
@@ -36,18 +33,16 @@
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [
             {
-                "csvFile": "./data/Accounts.csv",
+                "filename": "./data/Accounts.csv",
                 "sobjectType": "Account",
                 "externalIdField": "MyExternalId__c"
             }
-        ],
-        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex", "./scripts/deployment/populate-custom-settings.apex"]
+        ]
     },
     {
         "name": "Salesforce-QA-sandbox",
         "isDevHub": false,
         "deployOnlyDiff": false,
-        "experienceSitesToPublish": [],
-        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex"]
+        "experienceSitesToPublish": []
     }
 ]
