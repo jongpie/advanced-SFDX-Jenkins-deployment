@@ -5,7 +5,7 @@
         "deployOnlyDiff": true,
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [],
-        "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
+        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex", "./scripts/deployment/populate-custom-settings.apex"]
     },
     {
         "name": "Salesforce-Training-sandbox",
@@ -13,7 +13,7 @@
         "deployOnlyDiff": false,
         "experienceSitesToPublish": [],
         "csvDataToUpsert": [],
-        "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
+        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex", "./scripts/deployment/populate-custom-settings.apex"]
     },
     {
         "name": "Salesforce-Staging-sandbox",
@@ -27,7 +27,7 @@
                 "externalIdField": "MyExternalId__c"
             }
         ],
-        "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
+        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex", "./scripts/deployment/populate-custom-settings.apex"]
     },
     {
         "name": "Salesforce-UAT-sandbox",
@@ -41,13 +41,13 @@
                 "externalIdField": "MyExternalId__c"
             }
         ],
-        "postDeploymentScripts": ["./scripts/schedule-jobs.apex", "./scripts/populate-custom-settings.apex"]
+        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex", "./scripts/deployment/populate-custom-settings.apex"]
     },
     {
         "name": "Salesforce-QA-sandbox",
         "isDevHub": false,
         "deployOnlyDiff": false,
         "experienceSitesToPublish": [],
-        "postDeploymentScripts": ["./scripts/schedule-jobs.apex"]
+        "postDeploymentScripts": ["./scripts/deployment/schedule-jobs.apex"]
     }
 ]
