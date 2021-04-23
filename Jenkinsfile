@@ -26,8 +26,8 @@ def SCRATCH_ORG_DEFINITION_FILE = './config/project-scratch-def.json'
 
 // Static variables
 // def BUILD_NOTIFICATION_EMAIL = 'someone@test.com'
-def SCHEDULE_JOBS_SCRIPT = './scripts/schedule-jobs.apex'
-def POPULATE_CUSTOM_SETTINGS_SCRIPT = './scripts/populate-custom-settings.apex'
+def SCHEDULE_JOBS_SCRIPT = './scripts/deployment/schedule-jobs.apex'
+def POPULATE_CUSTOM_SETTINGS_SCRIPT = './scripts/deployment/populate-custom-settings.apex'
 
 pipeline {
     agent any
