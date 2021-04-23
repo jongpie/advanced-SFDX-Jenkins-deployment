@@ -68,6 +68,7 @@ If you want to leverage this same approach for your project, then you'll want to
     -   [Workspace Cleanup](https://plugins.jenkins.io/ws-cleanup/)
 -   [SFDX (Salesforce CLI)](https://developer.salesforce.com/tools/sfdxcli) installed on the Jenkins server/build agents
 -   [PMD](https://github.com/pmd/pmd/releases) installed on the Jenkins server/build agents
+-   Optional: There are plugins for simplifying the integration of Jenkins with your Git repo, including plugins for [Github](https://plugins.jenkins.io/github/), [Bitbucket](https://plugins.jenkins.io/bitbucket/) and others
 
 ## Git Branches
 
