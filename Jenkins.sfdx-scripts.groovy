@@ -15,10 +15,10 @@ def installDependencies() {
     runCommand('npm install')
 }
 
-def loadSfdxEnvironment(salesforceEnvironmentName) {
-    println('loadSfdxEnvironment(salesforceEnvironmentName)==' + salesforceEnvironmentName)
+def loadSfdxEnvironment(salesforceEnvironment) {
+    echo 'loadSfdxEnvironment(salesforceEnvironment)==' + salesforceEnvironment
     def sfdxEnvironments = loadSfdxEnvironments()
-    def environment = sfdxEnvironments[salesforceEnvironmentName]
+    def environment = sfdxEnvironments[salesforceEnvironment]
     return environment
 }
 
@@ -31,7 +31,7 @@ def loadSfdxEnvironments() {
         sfdxEnvironmentsByName[sfdxEnvironment.name] = sfdxEnvironment
     }
 
-    println('sfdxEnvironmentsByName==' + sfdxEnvironmentsByName)
+    echo 'sfdxEnvironmentsByName==' + sfdxEnvironmentsByName
     return sfdxEnvironmentsByName
 }
 
@@ -45,7 +45,7 @@ def loadSfdxPackageDirectories() {
     }
 
     def packageDirectories = packageDirectoryPaths.join(',')
-    println('packageDirectories==' + packageDirectories)
+    echo 'packageDirectories==' + packageDirectories
     return packageDirectories
 }
 
@@ -152,6 +152,10 @@ def deployToSalesforce(salesforceEnvironment, commitChanges, deployOnlyDiff) {
             unstable('Check-only deploy failure for Salesforce')
         }
     }
+}
+
+def deleteObsoleteFlowVersions(salesforceEnvironment) {
+    runCommand('python ./scripts/deployment/delete-old-flow-versions --targetusername ' + salesforceEnvironment)
 }
 
 def publishCommunitySite(salesforceEnvironment, commitChanges, communitySiteName) {
