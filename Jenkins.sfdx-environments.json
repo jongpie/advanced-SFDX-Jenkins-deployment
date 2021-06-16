@@ -1,0 +1,61 @@
+[
+    {
+        "name": "Salesforce-Production",
+        "isDevHub": true,
+        "deployOnlyDiff": false,
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": [
+            {
+                "filename": "./data/MyCustomObject__c.csv",
+                "sobjectType": "MyCustomObject__c",
+                "externalIdField": "MyExternalId__c"
+            }
+        ]
+    },
+    {
+        "name": "Salesforce-Training-sandbox",
+        "isDevHub": false,
+        "deployOnlyDiff": false,
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": []
+    },
+    {
+        "name": "Salesforce-Staging-sandbox",
+        "isDevHub": false,
+        "deployOnlyDiff": false,
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": [
+            {
+                "filename": "./data/MyCustomObject__c.csv",
+                "sobjectType": "MyCustomObject__c",
+                "externalIdField": "MyExternalId__c"
+            }
+        ]
+    },
+    {
+        "name": "Salesforce-UAT-sandbox",
+        "isDevHub": false,
+        "deployOnlyDiff": false,
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": [
+            {
+                "filename": "./data/MyCustomObject__c.csv",
+                "sobjectType": "MyCustomObject__c",
+                "externalIdField": "MyExternalId__c"
+            }
+        ]
+    },
+    {
+        "name": "Salesforce-QA-sandbox",
+        "isDevHub": false,
+        "deployOnlyDiff": false,
+        "experienceSitesToPublish": [],
+        "csvDataToUpsert": [
+            {
+                "filename": "./data/MyCustomObject__c.csv",
+                "sobjectType": "MyCustomObject__c",
+                "externalIdField": "MyExternalId__c"
+            }
+        ]
+    }
+]
